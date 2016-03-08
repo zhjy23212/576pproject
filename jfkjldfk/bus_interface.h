@@ -29,7 +29,7 @@ public:
 class bus_slave_if : virtual public sc_interface
 {
 public:
-   sc_event end_transmission;
+   
    virtual void SlvListen(unsigned &reqAddr, unsigned &reqRdnwr, unsigned &reqLen) = 0;
    virtual void SlvAcknowledge() = 0;
    virtual void SlvSendReadData(unsigned data) = 0;
