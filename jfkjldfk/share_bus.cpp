@@ -90,9 +90,9 @@ using namespace::std;
             rcv_Response = false;
             
             
-            //wait(200, SC_NS, slv_ack);
+            wait(200, SC_NS, slv_ack);
             //            cout<<"slv_ack"<<endl;
-            wait(slv_ack);
+            //wait(slv_ack);
             
             //            cout << "get slv_ack" << endl;
             if (rcv_Response) {

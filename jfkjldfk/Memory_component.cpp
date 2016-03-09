@@ -25,8 +25,14 @@ void Memory::  listenThread(){
                 for (int i = 0; i<len; i++) {
                     ioPort->SlvReceiveWriteData(mem_data[addr-ADDR_begin+i]);
                     
+                    int cnt = 0;
                     for (int i = 72; i<108; i++) {
                         cout<<mem_data[i]<<" ";
+                        cnt++;
+                        if(cnt==6){
+                            cout<<endl;
+                            cnt = 0;
+                        }
                     }
                     cout<<endl;
                 }
