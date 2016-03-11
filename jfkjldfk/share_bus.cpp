@@ -12,6 +12,7 @@ using namespace::std;
 
     
     bool share_bus:: MstBusRequest(unsigned mstId, bool rdnwr, unsigned addr, unsigned len){
+        wait(3*TIME_UNIT,SC_NS);
         robin_vec[mstId]->push(new Request(mstId, rdnwr, addr, len));
         
         //rqt_queue.push(new Request(mstId, rdnwr, addr, len));
@@ -19,12 +20,11 @@ using namespace::std;
         do{
             wait(mst_ack);
         }while (current_request->id !=  mstId);
-        wait(3*TIME_UNIT,SC_NS);
         return rcv_Response;
     }
     
     void share_bus:: SlvListen(unsigned &reqAddr, unsigned &reqRdnwr, unsigned &reqLen){
-        //        cout<<"slv_request_event"<<endl;
+        
         wait(slv_request_event);
         reqAddr =  current_request->addr;
         reqRdnwr  = current_request->rnw;
@@ -32,9 +32,8 @@ using namespace::std;
     }
     
     void share_bus:: SlvAcknowledge(){
-        wait(1*TIME_UNIT,SC_NS);
         rcv_Response = true;
-        slv_ack.notify();
+        slv_ack.notify(1*TIME_UNIT,SC_NS);
     }
     
     void share_bus:: MstReadData(unsigned &data){
@@ -43,7 +42,7 @@ using namespace::std;
         data = bus_data;
         cnt++;
         if(cnt==current_request->len){
-            end_transmission.notify();
+            end_transmission.notify(1*TIME_UNIT,SC_NS);
             cnt=0;
         }
     }
@@ -52,15 +51,15 @@ using namespace::std;
     void share_bus:: SlvSendReadData(unsigned data){
         //        cout<<"mst_ready SlvSendReadData"<<endl;
         wait(mst_ready);
-        wait(1*TIME_UNIT,SC_NS);
         bus_data = data;
-        data_ready.notify();
+        //wait(1*TIME_UNIT,SC_NS);
+        data_ready.notify(1*TIME_UNIT,SC_NS);
     }
     
     void share_bus:: MstWriteData(unsigned data){
-        wait(1*TIME_UNIT,SC_NS);
         bus_data = data;
-        mst_ready.notify();
+        //wait(1*TIME_UNIT,SC_NS);
+        mst_ready.notify(1*TIME_UNIT,SC_NS);
         wait(slv_ready);
     }
     
@@ -71,7 +70,7 @@ using namespace::std;
         data  = bus_data;
         cnt++;
         if(cnt==current_request->len){
-            end_transmission.notify();
+            end_transmission.notify(1*TIME_UNIT,SC_NS);
             cnt=0;
         }
     }
@@ -116,9 +115,8 @@ using namespace::std;
             
             if (rcv_Response) {
                 mst_ack.notify();
-                //                cout<<"wait end_trans"<<endl;
                 wait(end_transmission);
-                wait(1*TIME_UNIT,SC_NS);
+                
             }else{
                 mst_ack.notify();
             }
