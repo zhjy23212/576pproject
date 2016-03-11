@@ -23,19 +23,27 @@ class share_bus:public sc_module,public bus_slave_if, public bus_master_if{
 public:
     bool rcv_Response;
     sc_event    mst_ack,slv_ack,
-    bus_request_event,slv_request_event,
-    mst_ready,data_ready,slv_ready,
-    end_transmission
-    ;
+                bus_request_event,slv_request_event,
+                mst_ready,data_ready,slv_ready,
+                end_transmission;
+    
+    unsigned int robin_index = 0;
+    
+    vector<queue<Request*>*> robin_vec;
     
     Request *current_request;
     
-    queue<Request*> rqt_queue;
+    //queue<Request*> rqt_queue;
     
-    int cnt;
+    unsigned int cnt;
     unsigned int bus_data;
     SC_HAS_PROCESS(share_bus);
     share_bus(sc_module_name name):sc_module(name){
+        
+        robin_vec.push_back(new queue<Request*>);
+        robin_vec.push_back(new queue<Request*>);
+        
+        
         rcv_Response =false;
         cnt = 0;
         SC_THREAD(arbiter);

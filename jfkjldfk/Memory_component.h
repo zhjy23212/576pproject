@@ -26,16 +26,15 @@ public:
     sc_port<bus_slave_if>  ioPort;
     unsigned int  addr, Rdnwr,len;
     vector<unsigned int>  mem_data;
-    vector<unsigned int>  c;
-    vector<unsigned int>  a ;
-    vector<unsigned int>  b ;
+    vector<unsigned int>  c ;
+    vector<unsigned int>   a{0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
+    vector<unsigned int>  b{0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
     
     
     SC_HAS_PROCESS(Memory);
     Memory(sc_module_name name) : sc_module(name) {
-        
-        a = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
-        b = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
+        //a = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
+        //b = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
         c.assign(36, 0);
         mem_data = a;
         mem_data.insert(mem_data.end(), b.begin(), b.end());

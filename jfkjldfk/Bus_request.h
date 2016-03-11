@@ -11,7 +11,7 @@
 
 
 //------------------------------------
-#define LOOPS 1   //1000
+#define LOOPS 1000
 #define SIZE 5
 #define ADDR_begin 4096
 #define ADDR_end 4096+107
@@ -22,6 +22,7 @@
 #define HW_ADDR_op 1027
 #define HW_ADDR_done 1028
 
+#define TIME_UNIT 5
 //------------------------------------
 
 

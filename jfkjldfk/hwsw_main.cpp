@@ -25,13 +25,14 @@ using namespace std;
 class top_module:public sc_module{
     
 public:
-    unsigned int id = 0;
+    unsigned int id ;
     
     share_bus *bus_inst;
     hw_accelerator *hw_inst;
     Memory *mem_inst;
     sw_component *sw_inst;
     top_module(sc_module_name name) :sc_module(name){
+        id = 0;
         sw_inst = new sw_component("sw_1",id++);
         hw_inst = new hw_accelerator("hw_1",id++);
         mem_inst = new Memory("mem_1");
@@ -43,6 +44,10 @@ public:
         mem_inst->ioPort(*bus_inst);
         
     }
+    
+    void top_print(){
+        cout<<"The name of top module"<< this->name()<<endl;
+    }
 };
 
 //----------------------------------------------------------------
@@ -51,6 +56,7 @@ public:
 int sc_main(int argc, char* argv[]){
     cout<<"sc_main"<<endl;
     top_module *top = new top_module("top1");
+    top->top_print();
     sc_start();
     
     return 0;

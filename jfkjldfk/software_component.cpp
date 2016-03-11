@@ -12,15 +12,18 @@ void sw_component:: main() // Total Cycles: 819343
     int n;
     int i,j;
     
+    //----------comment from here for loop1
+    
     for (n = 0 ; n < LOOPS ; n++) // Total Cycles: 818600,  Execs: 1,     Iters: 1000
     {
         cout<< "WRITE ADDR C time "<<n<<endl;
+        
+        
         for(i=1;i<=SIZE;i++){        // Total Cycles: 57900,   Execs: 1000,  Iters: 5
             //                for(j=1;j<=SIZE;j++)      // Total Cycles: 52000,   Execs: 5000,  Iters: 5
             //                    c[i][j] = 0;
             
             bool ack = sw_mst->MstBusRequest(this->id, false, HW_ADDR_c, 1);
-            
             if(ack){
                 sw_mst->MstWriteData(ADDR_begin+72+(SIZE+1)*i+1);
             }
@@ -48,6 +51,11 @@ void sw_component:: main() // Total Cycles: 819343
         }
         
         
+        //----------COMMENT LOOP1 ENDS HERE
+        
+        
+        
+        //----------comment from here for loop2
         
         for(i=1;i<=SIZE;i++){        // Total Cycles: 757900,  Execs: 1000,  Iters: 5
             for(j=1;j<=SIZE;j++){      // Total Cycles: 752000,  Execs: 5000,  Iters: 5
@@ -86,12 +94,10 @@ void sw_component:: main() // Total Cycles: 819343
             }
         }
         
+        
+        //----------comment for loop2 ends here
+        
     }
-    cout<<"YES we finished!"<<endl;
-    //        for (int i = 72; i<108; i++) {
-    //            cout<<mem_data[i]<<" ";
-    //        }
-    //        cout<<endl;
     
-    //        return 0;
+    cout<<"YES finished! TIME@ "<<sc_time_stamp()<<" in 200MHz clock"<<endl;
 }

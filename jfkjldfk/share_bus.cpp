@@ -12,13 +12,14 @@ using namespace::std;
 
     
     bool share_bus:: MstBusRequest(unsigned mstId, bool rdnwr, unsigned addr, unsigned len){
-        rqt_queue.push(new Request(mstId, rdnwr, addr, len));
-        //cout<<"id "<<mstId<<" DO_READ "<<rdnwr<<" ADDR "<< addr<<" LEN "<<endl;
+        robin_vec[mstId]->push(new Request(mstId, rdnwr, addr, len));
+        
+        //rqt_queue.push(new Request(mstId, rdnwr, addr, len));
         bus_request_event.notify();
         do{
-            
             wait(mst_ack);
         }while (current_request->id !=  mstId);
+        wait(3*TIME_UNIT,SC_NS);
         return rcv_Response;
     }
     
@@ -31,17 +32,16 @@ using namespace::std;
     }
     
     void share_bus:: SlvAcknowledge(){
+        wait(1*TIME_UNIT,SC_NS);
         rcv_Response = true;
         slv_ack.notify();
     }
     
     void share_bus:: MstReadData(unsigned &data){
         mst_ready.notify();
-        //        cout<<"data ready in MSTREADDATA"<<endl;
         wait(data_ready);
         data = bus_data;
         cnt++;
-        //        cout << cnt << current_request->len << endl;
         if(cnt==current_request->len){
             end_transmission.notify();
             cnt=0;
@@ -52,14 +52,15 @@ using namespace::std;
     void share_bus:: SlvSendReadData(unsigned data){
         //        cout<<"mst_ready SlvSendReadData"<<endl;
         wait(mst_ready);
+        wait(1*TIME_UNIT,SC_NS);
         bus_data = data;
         data_ready.notify();
     }
     
     void share_bus:: MstWriteData(unsigned data){
+        wait(1*TIME_UNIT,SC_NS);
         bus_data = data;
         mst_ready.notify();
-        //        cout<<"slv_ready in  MstWriteData"<<endl;
         wait(slv_ready);
     }
     
@@ -79,28 +80,45 @@ using namespace::std;
     
     void share_bus:: arbiter(){
         while (1) {
-            if (rqt_queue.empty()) {
-                //                cout<<"waiting bus_request_event"<<endl;
+            
+            if (robin_vec[0]->empty()&&robin_vec[1]->empty()) {
                 wait(bus_request_event);
             }
-            current_request  =  rqt_queue.front();
-            rqt_queue.pop();
+            /*
+            if (rqt_queue.empty()) {
+                wait(bus_request_event);
+            }
+            */
+            
+            while (1) {
+                if (robin_index>=robin_vec.size()) {
+                    robin_index = 0 ;
+                }
+                
+                if(!robin_vec[robin_index]->empty()){
+                    current_request = robin_vec[robin_index]->front();
+                    robin_vec[robin_index]->pop();
+                    robin_index++;
+                    break;
+                }else{
+                    robin_index++;
+                }
+            }
+            
+            //current_request  =  rqt_queue.front();
+            //rqt_queue.pop();
             cnt = 0;
             slv_request_event.notify();
             rcv_Response = false;
             
             
-            wait(200, SC_NS, slv_ack);
-            //            cout<<"slv_ack"<<endl;
-            //wait(slv_ack);
+            wait(40, SC_NS, slv_ack);  //twice of acknowledge time for timeout
             
-            //            cout << "get slv_ack" << endl;
             if (rcv_Response) {
                 mst_ack.notify();
                 //                cout<<"wait end_trans"<<endl;
                 wait(end_transmission);
-                //                cout << "end trans" << endl;
-                //cout<<sc_time_stamp()<<endl;
+                wait(1*TIME_UNIT,SC_NS);
             }else{
                 mst_ack.notify();
             }
