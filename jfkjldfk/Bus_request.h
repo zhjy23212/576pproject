@@ -22,7 +22,14 @@
 #define HW_ADDR_op 1027
 #define HW_ADDR_done 1028
 
+
 #define TIME_UNIT 5
+
+#define NUM_BLOCKS 64
+#define BLOCK_SIZE 64
+#define INPUT1_ADDR 0
+#define INPUT2_ADDR 16384
+#define SAD_OUTPUT_ADDR 32768
 //------------------------------------
 
 
