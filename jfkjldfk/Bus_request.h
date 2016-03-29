@@ -14,7 +14,7 @@
 #define LOOPS 1000
 #define SIZE 5
 #define ADDR_begin 4096
-#define ADDR_end 4096+107
+#define ADDR_end (4096+107)
 
 #define HW_ADDR_a 1024
 #define HW_ADDR_b 1025

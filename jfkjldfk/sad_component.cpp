@@ -57,12 +57,14 @@ void  sad_component:: main(){
             wait(TIME_UNIT,SC_NS);
             
         }
-        std::cout<<"WRITE SAD "<<sc_time_stamp()<<"  sad = " <<sad<< endl;
+        std::cout<<"WRITE SAD @ "<<sc_time_stamp()<<" BLOCK "<<block<<"  sad = " <<sad<< endl;
         SingleWrite(SAD_OUTPUT_ADDR+block, sad);
         
         
         
     }
+    
+    std::cout<<"SAD computation finished!"<<endl;
         
 }
 
