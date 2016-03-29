@@ -9,6 +9,8 @@
 #ifndef Memory_component_h
 #define Memory_component_h
 
+#define MEM_SIZE 65536
+
 #include <systemc.h>
 #include "Bus_request.h"
 #include "bus_interface.h"
@@ -32,17 +34,39 @@ public:
     
     
     SC_HAS_PROCESS(Memory);
-    Memory(sc_module_name name) : sc_module(name) {
+    Memory(sc_module_name name, const char* filename) : sc_module(name) {
         //a = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
         //b = {0,0,0,0,0,0,0,0,9,4,7,9,0,12,14,15,16,11,0,2,3,4,5,6,0,4,3,2,1,2,0,2,7,6,4,9};
         c.assign(36, 0);
         mem_data = a;
         mem_data.insert(mem_data.end(), b.begin(), b.end());
         mem_data.insert(mem_data.end(), c.begin(),c.end());
+        
+        //string filename = "sample_mem_init.txt";
+        ifstream fileIn(filename);
+        unsigned int mem_cnt,dataint;
+        mem_cnt =0;
+        if(!fileIn.is_open()){
+            cout<<"not read file yet "<<endl;
+            return;
+        }
+        
+        while (fileIn >> dataint) {
+            if (MEM_SIZE<=mem_cnt) {
+                cout<<"Data_szie larger than MEM_SIZE at "<<mem_cnt<<endl;
+                return;
+            }
+            SAD_mem[mem_cnt++] = dataint;
+        }
+        
         SC_THREAD(listenThread);
     }
     
     void listenThread();
+    
+    
+private:
+    unsigned int SAD_mem[MEM_SIZE];
 };
 
 

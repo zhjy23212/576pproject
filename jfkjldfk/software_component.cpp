@@ -16,7 +16,7 @@ void sw_component:: main() // Total Cycles: 819343
     
     for (n = 0 ; n < LOOPS ; n++) // Total Cycles: 818600,  Execs: 1,     Iters: 1000
     {
-        cout<< "WRITE ADDR C time "<<n<<endl;
+        //cout<< "WRITE ADDR C time "<<n<<endl;
         
         
         for(i=1;i<=SIZE;i++){        // Total Cycles: 57900,   Execs: 1000,  Iters: 5
@@ -34,7 +34,7 @@ void sw_component:: main() // Total Cycles: 819343
             
             unsigned int done_sig = 0;
             
-            cout<< "busy waiting here"<<endl;
+            //cout<< "busy waiting here"<<endl;
             
             
             
@@ -47,7 +47,7 @@ void sw_component:: main() // Total Cycles: 819343
                 
             }while (done_sig==0);
             
-            cout << "finish" << endl;
+            //cout << "finish" << endl;
         }
         
         

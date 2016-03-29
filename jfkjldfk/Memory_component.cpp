@@ -25,6 +25,7 @@ void Memory::  listenThread(){
                 for (int i = 0; i<len; i++) {
                     ioPort->SlvReceiveWriteData(mem_data[addr-ADDR_begin+i]);
                     
+                    /*
                     int cnt = 0;
                     for (int i = 72; i<108; i++) {
                         cout<<mem_data[i]<<" ";
@@ -35,8 +36,31 @@ void Memory::  listenThread(){
                         }
                     }
                     cout<<endl;
+                    
+                    */
                 }
             }
         }
+        
+        
+        //SAD
+        if(addr>=INPUT1_ADDR&&addr<INPUT1_ADDR+MEM_SIZE){
+            ioPort->SlvAcknowledge();
+            if(Rdnwr){
+                for (int i = 0; i<len; i++) {
+                    //cout<<"NOW IN MEM "<<mem_data[addr-ADDR_begin+i]<<endl;
+                    //int ind = (int)addr+i-INPUT1_ADDR;
+                    unsigned int temp =SAD_mem[addr-INPUT1_ADDR+i];
+                    ioPort->SlvSendReadData(temp);
+                }
+            }else{
+                for (int i = 0; i<len; i++){
+                    ioPort->SlvReceiveWriteData(SAD_mem[addr-INPUT1_ADDR+i]);
+                }
+            }
+        }
+        
+        
+        
     }
 }

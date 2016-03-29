@@ -38,10 +38,10 @@ public:
     unsigned int cnt;
     unsigned int bus_data;
     SC_HAS_PROCESS(share_bus);
-    share_bus(sc_module_name name):sc_module(name){
-        
-        robin_vec.push_back(new queue<Request*>);
-        robin_vec.push_back(new queue<Request*>);
+    share_bus(sc_module_name name,int idNum):sc_module(name){
+        for(int i = 0 ;i<idNum;i++){
+            robin_vec.push_back(new queue<Request*>);
+        }
         
         
         rcv_Response =false;
