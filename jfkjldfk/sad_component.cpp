@@ -37,28 +37,52 @@ void sad_component:: SingleWrite(unsigned address, unsigned int data){
     }
 }
 
+void sad_component:: SingleRead(unsigned address, unsigned int &data){
+    bool ack = sad_mst->MstBusRequest(this->id, true, address, 1);
+    if (ack) {
+        sad_mst->MstReadData(data);
+    }
+}
+
 void  sad_component:: main(){
     
     
     for (block=0; block<NUM_BLOCKS; block++)
     {
-        std::vector<unsigned int> v1,v2;
         sad = 0;
+        wait(5,SC_NS);
         int v;
-        BurstRead(INPUT1_ADDR+(block*BLOCK_SIZE), v1, BLOCK_SIZE);
-        BurstRead(INPUT2_ADDR+(block*BLOCK_SIZE), v2, BLOCK_SIZE);
         
-        for(int i = 0; i<v1.size();i++){
-            v = v1[i]-v2[i];
-            wait(TIME_UNIT,SC_NS);
-            if(v<0) v = -v;
-            wait(TIME_UNIT,SC_NS);
+        int block_addr = block*BLOCK_SIZE;
+        wait(5,SC_NS);
+
+        for(int i = 0; i<BLOCK_SIZE;i++){
+            unsigned int v1,v2;
+            int offset = block_addr+i;
+            wait(5,SC_NS);
+            
+            SingleRead(INPUT1_ADDR+offset, v1);
+            wait(5,SC_NS);
+            
+            SingleRead(INPUT2_ADDR+offset, v2);
+            wait(5,SC_NS);
+            
+            v = v1-v2;
+            wait(5,SC_NS);
+            
+            if(v<0){
+                wait(5,SC_NS);
+                v = -v;
+            }
+            wait(5,SC_NS);
+            
             sad += v;
-            wait(TIME_UNIT,SC_NS);
+            wait(5,SC_NS);
             
         }
         std::cout<<"WRITE SAD @ "<<sc_time_stamp()<<" BLOCK "<<block<<"  sad = " <<sad<< endl;
         SingleWrite(SAD_OUTPUT_ADDR+block, sad);
+        wait(5,SC_NS);
         
         
         

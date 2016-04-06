@@ -65,7 +65,7 @@ public:
 
 int sc_main(int argc, char* argv[]){
     if (argc<=3) {
-        cout<<"usage: hwsw_main mem_filename traffic_1_time traffic_2_time"<<endl;
+        cout<<"USAGE: ./hwsw_main mem_filename.txt traffic_1_time traffic_2_time"<<endl;
         exit(EXIT_FAILURE);
     }
     

@@ -35,6 +35,8 @@ public:
     void BurstRead(unsigned address, std::vector<unsigned int> &vec, unsigned len);
     
     void SingleWrite(unsigned address, unsigned int data);
+    
+    void SingleRead(unsigned address, unsigned int &data);
 };
 
 

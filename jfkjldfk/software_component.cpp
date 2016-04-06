@@ -52,7 +52,7 @@ void sw_component:: main() // Total Cycles: 819343
         
         
         //----------COMMENT LOOP1 ENDS HERE
-        cout<< "NOW START LOOP2 FOR SW "<<n<<endl;
+        //cout<< "Now start multiplication for SW loop No."<<n<<endl;
         
         
         //----------comment from here for loop2
@@ -99,7 +99,7 @@ void sw_component:: main() // Total Cycles: 819343
         
     }
     
-    cout<<endl<<"YES finished! TIME@ "<<sc_time_stamp()<<" in 200MHz clock"<<endl;
+    cout<<endl<<"Matrix multiplication computation finished! \nStop TIME@ "<<sc_time_stamp()<<" in 200MHz clock"<<endl;
     //wait(5000, SC_NS);
     sc_stop();
 }
