@@ -8,13 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B41140531C8FD32E001078D0 /* share_bus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B41140511C8FD32E001078D0 /* share_bus.cpp */; };
-		B41140591C8FE37A001078D0 /* hw_accelerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B41140581C8FE37A001078D0 /* hw_accelerator.cpp */; };
 		B411405C1C8FE548001078D0 /* Memory_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B411405A1C8FE548001078D0 /* Memory_component.cpp */; };
-		B411405F1C8FE7D2001078D0 /* software_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B411405D1C8FE7D2001078D0 /* software_component.cpp */; };
-		B41260291C765A06001CBB88 /* hwsw_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B41260271C765A06001CBB88 /* hwsw_main.cpp */; };
 		B4314C541C5AB7870026CD80 /* libsystemc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4314C4E1C5AAF880026CD80 /* libsystemc.a */; };
-		B439C7A21CA9E5E900346810 /* Traffic_Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B439C7A01CA9E5E900346810 /* Traffic_Generator.cpp */; };
-		B45E6B4E1CA3AB420092ED8A /* sad_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B45E6B4C1CA3AB420092ED8A /* sad_component.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,21 +28,12 @@
 		B411404D1C8FA446001078D0 /* Bus_request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bus_request.h; sourceTree = "<group>"; };
 		B41140511C8FD32E001078D0 /* share_bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = share_bus.cpp; sourceTree = "<group>"; };
 		B41140521C8FD32E001078D0 /* share_bus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = share_bus.h; sourceTree = "<group>"; };
-		B41140571C8FE320001078D0 /* hw_accelerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hw_accelerator.h; sourceTree = "<group>"; };
-		B41140581C8FE37A001078D0 /* hw_accelerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hw_accelerator.cpp; sourceTree = "<group>"; };
 		B411405A1C8FE548001078D0 /* Memory_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory_component.cpp; sourceTree = "<group>"; };
 		B411405B1C8FE548001078D0 /* Memory_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory_component.h; sourceTree = "<group>"; };
-		B411405D1C8FE7D2001078D0 /* software_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = software_component.cpp; sourceTree = "<group>"; };
-		B411405E1C8FE7D2001078D0 /* software_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = software_component.h; sourceTree = "<group>"; };
-		B41260271C765A06001CBB88 /* hwsw_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hwsw_main.cpp; sourceTree = "<group>"; };
 		B412602A1C765AED001CBB88 /* bus_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bus_interface.h; sourceTree = "<group>"; };
 		B4314C421C5AAEAF0026CD80 /* jfkjldfk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jfkjldfk; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4314C4C1C5AAF120026CD80 /* Library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Library; path = ../../../../Library; sourceTree = "<group>"; };
 		B4314C4E1C5AAF880026CD80 /* libsystemc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsystemc.a; path = "../../../../Library/systemc-2.3.1/lib/libsystemc.a"; sourceTree = "<group>"; };
-		B439C7A01CA9E5E900346810 /* Traffic_Generator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Traffic_Generator.cpp; sourceTree = "<group>"; };
-		B439C7A11CA9E5E900346810 /* Traffic_Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Traffic_Generator.h; sourceTree = "<group>"; };
-		B45E6B4C1CA3AB420092ED8A /* sad_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sad_component.cpp; sourceTree = "<group>"; };
-		B45E6B4D1CA3AB420092ED8A /* sad_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sad_component.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,21 +69,12 @@
 		B4314C441C5AAEAF0026CD80 /* jfkjldfk */ = {
 			isa = PBXGroup;
 			children = (
-				B41260271C765A06001CBB88 /* hwsw_main.cpp */,
 				B412602A1C765AED001CBB88 /* bus_interface.h */,
 				B411405A1C8FE548001078D0 /* Memory_component.cpp */,
 				B411405B1C8FE548001078D0 /* Memory_component.h */,
-				B411405D1C8FE7D2001078D0 /* software_component.cpp */,
-				B411405E1C8FE7D2001078D0 /* software_component.h */,
 				B41140511C8FD32E001078D0 /* share_bus.cpp */,
 				B41140521C8FD32E001078D0 /* share_bus.h */,
 				B411404D1C8FA446001078D0 /* Bus_request.h */,
-				B41140571C8FE320001078D0 /* hw_accelerator.h */,
-				B41140581C8FE37A001078D0 /* hw_accelerator.cpp */,
-				B45E6B4C1CA3AB420092ED8A /* sad_component.cpp */,
-				B45E6B4D1CA3AB420092ED8A /* sad_component.h */,
-				B439C7A01CA9E5E900346810 /* Traffic_Generator.cpp */,
-				B439C7A11CA9E5E900346810 /* Traffic_Generator.h */,
 			);
 			path = jfkjldfk;
 			sourceTree = "<group>";
@@ -158,13 +135,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B45E6B4E1CA3AB420092ED8A /* sad_component.cpp in Sources */,
 				B411405C1C8FE548001078D0 /* Memory_component.cpp in Sources */,
-				B411405F1C8FE7D2001078D0 /* software_component.cpp in Sources */,
-				B439C7A21CA9E5E900346810 /* Traffic_Generator.cpp in Sources */,
 				B41140531C8FD32E001078D0 /* share_bus.cpp in Sources */,
-				B41140591C8FE37A001078D0 /* hw_accelerator.cpp in Sources */,
-				B41260291C765A06001CBB88 /* hwsw_main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
