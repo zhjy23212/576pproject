@@ -11,25 +11,19 @@
 
 
 //------------------------------------
-#define LOOPS 1000
-#define SIZE 5
-#define ADDR_begin 4096
-#define ADDR_end (4096+107)
 
-#define HW_ADDR_a 1024
-#define HW_ADDR_b 1025
-#define HW_ADDR_c 1026
-#define HW_ADDR_op 1027
-#define HW_ADDR_done 1028
+
+#define IMG_WIDTH 256
+#define IMG_HEIGHT 256
 
 
 #define TIME_UNIT 5
 
-#define NUM_BLOCKS 64
-#define BLOCK_SIZE 64
-#define INPUT1_ADDR 10000
-#define INPUT2_ADDR 26384
-#define SAD_OUTPUT_ADDR 42768
+#define MEM_START_ADDRESS 1024
+#define MEM_END_ADDRESS  (1024+IMG_WIDTH*IMG_HEIGHT-1)
+#define MEM_DIST (1024+IMG_WIDTH*IMG_HEIGHT)
+#define MEM_ANG (1024+IMG_WIDTH*IMG_HEIGHT+1)
+
 //------------------------------------
 
 
