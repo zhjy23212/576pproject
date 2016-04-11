@@ -10,5 +10,7 @@
 #define display_LCD_hpp
 
 #include <stdio.h>
+#include "bus_interface.h"
+#include "Bus_request.h"
 
 #endif /* display_LCD_hpp */
