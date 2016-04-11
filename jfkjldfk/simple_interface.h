@@ -16,6 +16,6 @@ class simple_if  : virtual public sc_interface
 public:
     virtual bool Write ( unsigned  int addr,  unsigned  int data )  =  0 ;
     virtual bool Read ( unsigned  int addr,  unsigned int & data )  =  0 ;
-} ;
+};
 
 #endif /* simple_interface_h */

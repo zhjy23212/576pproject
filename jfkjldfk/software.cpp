@@ -14,17 +14,20 @@ void sw::main(){
     if(ack){
         mst->MstWriteData(1);
     }
+    //send signal to let ccd caputure picture
     do{
         ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
         if (ack) {
             mst->MstReadData(CCD_done_sig);
         }
     }while (CCD_done_sig == 0);
+    //waiting for ccd to finish transfer its data
     
     ack = MstBusRequest(this->id, true, MEM_DIST, 1);
     if (ack) {
         mst->MstReadData(dist);
     }
+    //get the distance data from memory to check if it need deblur process
     
     if (dist<=5) {
         ack = MstBusRequest(this->id, false, dsp_need_process, 1);
@@ -38,6 +41,7 @@ void sw::main(){
         }
     }
     
+    //waiting for dsp finish its task
     do{
         ack = mst->MstBusRequest(this->id, true, DSP_DONE, 1);
         if (ack) {
@@ -45,6 +49,8 @@ void sw::main(){
         }
     }while (dsp_done_sig == 0);
     
+    
+    //send signal to let LCD_on and display the processed picture
     ack = MstBusRequest(this->id, false, LCD_ON,  1);
     if (ack) {
         mst->MstWriteData(1);
