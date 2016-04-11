@@ -27,8 +27,16 @@
 #define CCD_capture_addr 512
 #define CCD_done 513
 
-#define dsp_need_process 100000
-#define dsp_image_start
+
+#define dsp_need_process 90000
+#define DSP_DIST 90001
+#define DSP_ANG 90002
+#define dsp_image_start 100001
+#define dsp_image_end  (dsp_image_start+IMG_WIDTH*IMG_HEIGHT-1)
+
+#define LCD_ON 300000
+#define LCD_IMAGE_START_ADDR 300001
+#define LCD_IMAGE_END_ADDR  (LCD_IMAGE_START_ADDR+IMG_WIDTH*IMG_HEIGHT-1)
 
 
 //------------------------------------
