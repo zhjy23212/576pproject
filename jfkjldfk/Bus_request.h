@@ -8,7 +8,7 @@
 
 #ifndef Bus_request_h
 #define Bus_request_h
-
+#include <systemc.h>
 
 //------------------------------------
 
@@ -23,6 +23,13 @@
 #define MEM_END_ADDRESS  (1024+IMG_WIDTH*IMG_HEIGHT-1)
 #define MEM_DIST (1024+IMG_WIDTH*IMG_HEIGHT)
 #define MEM_ANG (1024+IMG_WIDTH*IMG_HEIGHT+1)
+
+#define CCD_capture_addr 512
+#define CCD_done 513
+
+#define dsp_need_process 100000
+#define dsp_image_start
+
 
 //------------------------------------
 
