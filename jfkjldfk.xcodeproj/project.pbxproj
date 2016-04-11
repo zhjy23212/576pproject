@@ -44,9 +44,10 @@
 		B43FF4AE1CBC145F00F329C6 /* display_LCD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = display_LCD.cpp; sourceTree = "<group>"; };
 		B43FF4AF1CBC145F00F329C6 /* display_LCD.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = display_LCD.hpp; sourceTree = "<group>"; };
 		B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Motion_detect.cpp; sourceTree = "<group>"; };
-		B43FF4B81CBC18E100F329C6 /* Motion_detect.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Motion_detect.hpp; sourceTree = "<group>"; };
+		B43FF4B81CBC18E100F329C6 /* Motion_detect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Motion_detect.h; sourceTree = "<group>"; };
 		B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSP.cpp; sourceTree = "<group>"; };
 		B43FF4BB1CBC1AA500F329C6 /* DSP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSP.hpp; sourceTree = "<group>"; };
+		B43FF4BD1CBC468500F329C6 /* simple_interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = simple_interface.h; sourceTree = "<group>"; };
 		B47542F91CB5C56600E456E5 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
 		B47542FA1CB5C56600E456E5 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		B47542FC1CB6011500E456E5 /* systemcenv.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = systemcenv.sh; sourceTree = "<group>"; };
@@ -99,9 +100,10 @@
 				B43FF4AE1CBC145F00F329C6 /* display_LCD.cpp */,
 				B43FF4AF1CBC145F00F329C6 /* display_LCD.hpp */,
 				B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */,
-				B43FF4B81CBC18E100F329C6 /* Motion_detect.hpp */,
+				B43FF4B81CBC18E100F329C6 /* Motion_detect.h */,
 				B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */,
 				B43FF4BB1CBC1AA500F329C6 /* DSP.hpp */,
+				B43FF4BD1CBC468500F329C6 /* simple_interface.h */,
 			);
 			path = jfkjldfk;
 			sourceTree = "<group>";

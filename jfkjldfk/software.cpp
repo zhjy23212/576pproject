@@ -8,7 +8,7 @@
 
 #include "software.h"
 void sw::main(){
-    unsigned int  done_sig =0;
+    unsigned int  CCD_done_sig =0,dsp_done_sig = 0;
     unsigned int dist = 0;
     bool ack = mst->MstBusRequest(this->id, false, CCD_capture_addr, 1);
     if(ack){
@@ -17,16 +17,16 @@ void sw::main(){
     do{
         ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
         if (ack) {
-            mst->MstReadData(done_sig);
+            mst->MstReadData(CCD_done_sig);
         }
-    }while (done_sig == 0);
+    }while (CCD_done_sig == 0);
     
     ack = MstBusRequest(this->id, true, MEM_DIST, 1);
     if (ack) {
         mst->MstReadData(dist);
     }
     
-    if (dist<=3) {
+    if (dist<=5) {
         ack = MstBusRequest(this->id, false, dsp_need_process, 1);
         if(ack){
             mst->MstWriteData(0);
@@ -39,11 +39,11 @@ void sw::main(){
     }
     
     do{
-        ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
+        ack = mst->MstBusRequest(this->id, true, DSP_DONE, 1);
         if (ack) {
-            mst->MstReadData(done_sig);
+            mst->MstReadData(dsp_done_sig);
         }
-    }while (done_sig == 0);
+    }while (dsp_done_sig == 0);
     
     ack = MstBusRequest(this->id, false, LCD_ON,  1);
     if (ack) {
