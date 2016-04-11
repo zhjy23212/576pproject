@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		B41140531C8FD32E001078D0 /* share_bus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B41140511C8FD32E001078D0 /* share_bus.cpp */; };
 		B4314C541C5AB7870026CD80 /* libsystemc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4314C4E1C5AAF880026CD80 /* libsystemc.a */; };
+		B43FF4AA1CBC10D100F329C6 /* software.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4A81CBC10D100F329C6 /* software.cpp */; };
+		B43FF4AD1CBC136F00F329C6 /* CCD_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4AB1CBC136F00F329C6 /* CCD_component.cpp */; };
+		B43FF4B01CBC145F00F329C6 /* display_LCD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4AE1CBC145F00F329C6 /* display_LCD.cpp */; };
+		B43FF4B91CBC18E100F329C6 /* Motion_detect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */; };
+		B43FF4BC1CBC1AA500F329C6 /* DSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */; };
 		B47542FB1CB5C56600E456E5 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B47542F91CB5C56600E456E5 /* Memory.cpp */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +37,16 @@
 		B4314C421C5AAEAF0026CD80 /* jfkjldfk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jfkjldfk; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4314C4C1C5AAF120026CD80 /* Library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Library; path = ../../../../Library; sourceTree = "<group>"; };
 		B4314C4E1C5AAF880026CD80 /* libsystemc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsystemc.a; path = "../../../../Library/systemc-2.3.1/lib/libsystemc.a"; sourceTree = "<group>"; };
+		B43FF4A81CBC10D100F329C6 /* software.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = software.cpp; sourceTree = "<group>"; };
+		B43FF4A91CBC10D100F329C6 /* software.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = software.h; sourceTree = "<group>"; };
+		B43FF4AB1CBC136F00F329C6 /* CCD_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCD_component.cpp; sourceTree = "<group>"; };
+		B43FF4AC1CBC136F00F329C6 /* CCD_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCD_component.h; sourceTree = "<group>"; };
+		B43FF4AE1CBC145F00F329C6 /* display_LCD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = display_LCD.cpp; sourceTree = "<group>"; };
+		B43FF4AF1CBC145F00F329C6 /* display_LCD.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = display_LCD.hpp; sourceTree = "<group>"; };
+		B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Motion_detect.cpp; sourceTree = "<group>"; };
+		B43FF4B81CBC18E100F329C6 /* Motion_detect.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Motion_detect.hpp; sourceTree = "<group>"; };
+		B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSP.cpp; sourceTree = "<group>"; };
+		B43FF4BB1CBC1AA500F329C6 /* DSP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSP.hpp; sourceTree = "<group>"; };
 		B47542F91CB5C56600E456E5 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
 		B47542FA1CB5C56600E456E5 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		B47542FC1CB6011500E456E5 /* systemcenv.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = systemcenv.sh; sourceTree = "<group>"; };
@@ -77,6 +92,16 @@
 				B411404D1C8FA446001078D0 /* Bus_request.h */,
 				B47542F91CB5C56600E456E5 /* Memory.cpp */,
 				B47542FA1CB5C56600E456E5 /* Memory.h */,
+				B43FF4A81CBC10D100F329C6 /* software.cpp */,
+				B43FF4A91CBC10D100F329C6 /* software.h */,
+				B43FF4AB1CBC136F00F329C6 /* CCD_component.cpp */,
+				B43FF4AC1CBC136F00F329C6 /* CCD_component.h */,
+				B43FF4AE1CBC145F00F329C6 /* display_LCD.cpp */,
+				B43FF4AF1CBC145F00F329C6 /* display_LCD.hpp */,
+				B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */,
+				B43FF4B81CBC18E100F329C6 /* Motion_detect.hpp */,
+				B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */,
+				B43FF4BB1CBC1AA500F329C6 /* DSP.hpp */,
 			);
 			path = jfkjldfk;
 			sourceTree = "<group>";
@@ -137,7 +162,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B43FF4B91CBC18E100F329C6 /* Motion_detect.cpp in Sources */,
 				B47542FB1CB5C56600E456E5 /* Memory.cpp in Sources */,
+				B43FF4AA1CBC10D100F329C6 /* software.cpp in Sources */,
+				B43FF4BC1CBC1AA500F329C6 /* DSP.cpp in Sources */,
+				B43FF4AD1CBC136F00F329C6 /* CCD_component.cpp in Sources */,
+				B43FF4B01CBC145F00F329C6 /* display_LCD.cpp in Sources */,
 				B41140531C8FD32E001078D0 /* share_bus.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
