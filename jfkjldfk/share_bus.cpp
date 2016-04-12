@@ -80,7 +80,7 @@ using namespace::std;
     void share_bus:: arbiter(){
         while (1) {
             //change when vec size changes, VERY IMPORTANT!
-            
+            //remember to change everytime when id++
             if (robin_vec[0]->empty()&&robin_vec[1]->empty()) {
                 wait(bus_request_event);
             }
