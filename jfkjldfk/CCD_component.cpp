@@ -41,6 +41,9 @@ void CCD::ccdmst(){
 
 void CCD::ccdslv(){
     while (1) {
+        inandout->Read(0, dist);
+        inandout->Read(1, angle);
+        
         slvinout->SlvListen(addr, rdnwr, len);
         if (addr==CCD_capture_addr) {
             slvinout->SlvAcknowledge();
