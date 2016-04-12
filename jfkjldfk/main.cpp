@@ -28,14 +28,17 @@ public:
     share_bus*bus1;
     Memory*mem1;
     motion_detector*motion1;
+    unsigned int idNum = 0;
+    
     top(sc_module_name name, char* filename, char* dist, char* ang):sc_module(name){
         unsigned int distance=atoi(dist);
-       unsigned int angle=atoi(ang);
-        bus1=new share_bus("bus1",50);
+        unsigned int angle=atoi(ang);
+        
         motion1=new motion_detector("motion1",distance,angle);
         mem1=new Memory("mem1");
-        sw1=new sw("sw1",51);
-        ccd1= new CCD("ccd1",filename);
+        sw1=new sw("sw1",idNum++);
+        ccd1= new CCD("ccd1",idNum++,filename);
+        bus1=new share_bus("bus1",idNum);
         sw1->mst(*bus1);
         ccd1->inandout(*motion1);
         ccd1->mstinout(*bus1);

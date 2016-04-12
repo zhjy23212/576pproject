@@ -15,6 +15,7 @@
 		B43FF4B91CBC18E100F329C6 /* Motion_detect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4B71CBC18E100F329C6 /* Motion_detect.cpp */; };
 		B43FF4BC1CBC1AA500F329C6 /* DSP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4BA1CBC1AA500F329C6 /* DSP.cpp */; };
 		B43FF4C01CBC4CBE00F329C6 /* display_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4BE1CBC4CBE00F329C6 /* display_controller.cpp */; };
+		B43FF4C31CBD9CC900F329C6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4C21CBD9CC900F329C6 /* main.cpp */; };
 		B47542FB1CB5C56600E456E5 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B47542F91CB5C56600E456E5 /* Memory.cpp */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,8 @@
 		B43FF4BD1CBC468500F329C6 /* simple_interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = simple_interface.h; sourceTree = "<group>"; };
 		B43FF4BE1CBC4CBE00F329C6 /* display_controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = display_controller.cpp; sourceTree = "<group>"; };
 		B43FF4BF1CBC4CBE00F329C6 /* display_controller.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = display_controller.hpp; sourceTree = "<group>"; };
+		B43FF4C11CBD9CC900F329C6 /* intimage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = intimage.txt; sourceTree = "<group>"; };
+		B43FF4C21CBD9CC900F329C6 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B47542F91CB5C56600E456E5 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
 		B47542FA1CB5C56600E456E5 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		B47542FC1CB6011500E456E5 /* systemcenv.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = systemcenv.sh; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		B4314C441C5AAEAF0026CD80 /* jfkjldfk */ = {
 			isa = PBXGroup;
 			children = (
+				B43FF4C11CBD9CC900F329C6 /* intimage.txt */,
+				B43FF4C21CBD9CC900F329C6 /* main.cpp */,
 				B47542FC1CB6011500E456E5 /* systemcenv.sh */,
 				B412602A1C765AED001CBB88 /* bus_interface.h */,
 				B41140511C8FD32E001078D0 /* share_bus.cpp */,
@@ -171,6 +176,7 @@
 			files = (
 				B43FF4C01CBC4CBE00F329C6 /* display_controller.cpp in Sources */,
 				B43FF4B91CBC18E100F329C6 /* Motion_detect.cpp in Sources */,
+				B43FF4C31CBD9CC900F329C6 /* main.cpp in Sources */,
 				B47542FB1CB5C56600E456E5 /* Memory.cpp in Sources */,
 				B43FF4AA1CBC10D100F329C6 /* software.cpp in Sources */,
 				B43FF4BC1CBC1AA500F329C6 /* DSP.cpp in Sources */,

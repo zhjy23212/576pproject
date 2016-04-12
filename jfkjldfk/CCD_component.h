@@ -42,7 +42,8 @@ public:
     sc_port<simple_if> inandout;
     SC_HAS_PROCESS(CCD);
     
-    CCD(sc_module_name name,char* filename):sc_module(name){
+    CCD(sc_module_name name, unsigned int idNum ,char* filename):sc_module(name){
+        this->ccdid = idNum;
         ifstream fin;
         fin.open(filename);
         int i=0;
