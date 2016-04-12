@@ -27,7 +27,6 @@ using namespace std;
 class CCD: public sc_module{
 public:
     vector<vector<unsigned int> > image;
-    vector<unsigned int> eachrow;
     sc_event ccdready;
     unsigned ccdid;
     unsigned int dist;
@@ -46,25 +45,22 @@ public:
         this->ccdid = idNum;
         ifstream fin;
         fin.open(filename);
-        int i=0;
         if (!fin.is_open()) {
             cout<<"couldn't open the file "<<filename<<endl;
             sc_stop();
         }
-        int a;
-        int total=0;
-        while (fin >> a) {
-            eachrow.push_back(a);
-            i++;
-            total++;
-//            cout<<i<<endl;
-            if (i==IMG_WIDTH-1) {
-                image.push_back(eachrow);
-                eachrow.clear();
-                i=0;
+        
+        string line;
+        while (std::getline(fin, line)) {
+            std::istringstream iss(line);
+            vector<unsigned int> eachrow;
+            int a;
+            while(iss>>a){
+                eachrow.push_back(a);
             }
+            image.push_back(eachrow);
+            eachrow.clear();
         }
-//        cout<<total<<endl;
         
         done=0;
         
