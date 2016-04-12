@@ -18,12 +18,13 @@
 #include "Bus_request.h"
 #include "simple_interface.h"
 #include <vector>
+#include "share_bus.h"
 
 using namespace std;
 
 #endif /* CCD_component_hpp */
 
-class CCD: public sc_module, public bus_master_if,public bus_slave_if,public simple_if{
+class CCD: public sc_module{
 public:
     vector<vector<unsigned int> > image;
     vector<unsigned int> eachrow;

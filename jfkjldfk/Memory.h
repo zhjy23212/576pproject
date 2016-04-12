@@ -14,9 +14,10 @@
 #include <systemc.h>
 #include "bus_interface.h"
 #include <vector>
+#include "share_bus.h"
 
 
-class Memory:public sc_module,public bus_slave_if{
+class Memory:public sc_module{
 public:
     sc_port<bus_slave_if>  slv;
     SC_HAS_PROCESS(Memory);

@@ -13,20 +13,20 @@ void CCD::ccdmst(){
         wait(ccdready);
         
         bool ack1=false;
-        ack1=MstBusRequest(ccdid, false, MEM_DIST, 1);
+        ack1=mstinout->MstBusRequest(ccdid, false, MEM_DIST, 1);
         if (ack1==true) {
             mstinout->MstWriteData(dist);
         }
         
         bool ack2=false;
-        ack2=MstBusRequest(ccdid, false, MEM_ANG, 1);
+        ack2=mstinout->MstBusRequest(ccdid, false, MEM_ANG, 1);
         if (ack2==true) {
             mstinout->MstWriteData(angle);
         }
         
         for (int i=0; i<IMG_HEIGHT; i++) {
             bool ack=false;
-            ack=MstBusRequest(ccdid, false, MEM_START_ADDRESS, IMG_WIDTH);
+            ack=mstinout->MstBusRequest(ccdid, false, MEM_START_ADDRESS, IMG_WIDTH);
             if (ack==true) {
                 for (int j=0; j<IMG_WIDTH; j++) {
                     mstinout->MstWriteData(image[i][j]);
