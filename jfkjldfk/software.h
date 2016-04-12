@@ -12,7 +12,8 @@
 #include <stdio.h>
 #include "Bus_request.h"
 #include "bus_interface.h"
-class sw:public sc_module,public bus_master_if{
+#include "share_bus.h"
+class sw:public sc_module{
 public:
     sc_port<bus_master_if> mst;
     unsigned int id;

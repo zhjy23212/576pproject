@@ -33,7 +33,6 @@
 #define DSP_ANG 90002
 #define dsp_image_start 100001
 #define dsp_image_end  (dsp_image_start+IMG_WIDTH*IMG_HEIGHT-1)
-#define DSP_DONE 90003
 
 #define LCD_ON 300000
 #define LCD_IMAGE_START_ADDR 300001
