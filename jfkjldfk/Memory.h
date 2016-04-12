@@ -24,12 +24,12 @@ public:
     
     Memory(sc_module_name name):sc_module(name){
         image.reserve(IMG_HEIGHT*IMG_WIDTH);
-        listenThread();
+        SC_THREAD(listenThread) ;
     }
     void listenThread();
     
     
-private:
+
     std::vector<unsigned int> image ;
     unsigned distance;
     unsigned angle;

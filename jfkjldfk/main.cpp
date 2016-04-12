@@ -26,7 +26,7 @@ public:
     sw*sw1;
     CCD*ccd1;
     share_bus*bus1;
-    Memory*mem1;
+    Memory *mem_inst;
     motion_detector*motion1;
     unsigned int idNum = 0;
     
@@ -35,15 +35,16 @@ public:
         unsigned int angle=atoi(ang);
         
         motion1=new motion_detector("motion1",distance,angle);
-        mem1=new Memory("mem1");
+        mem_inst=new Memory("mem1");
         sw1=new sw("sw1",idNum++);
         ccd1= new CCD("ccd1",idNum++,filename);
         bus1=new share_bus("bus1",idNum);
+        
         sw1->mst(*bus1);
         ccd1->inandout(*motion1);
         ccd1->mstinout(*bus1);
         ccd1->slvinout(*bus1);
-        mem1->slv(*bus1);
+        mem_inst->slv(*bus1);
     }
 };
 
