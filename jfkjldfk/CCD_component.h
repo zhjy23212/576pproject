@@ -52,21 +52,21 @@ public:
             sc_stop();
         }
         int a;
+        int total=0;
         while (fin >> a) {
             eachrow.push_back(a);
             i++;
+            total++;
+//            cout<<i<<endl;
             if (i==IMG_WIDTH-1) {
                 image.push_back(eachrow);
                 eachrow.clear();
                 i=0;
             }
         }
-        
-        inandout->Read(0, dist);
-        inandout->Read(1, angle);
+//        cout<<total<<endl;
         
         done=0;
-        ccdid=10;
         
         SC_THREAD(ccdmst);
         SC_THREAD(ccdslv);
