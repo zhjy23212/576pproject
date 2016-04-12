@@ -26,6 +26,9 @@ void sw::main(){
         mst->MstReadData(dist);
     }
     
+    //not implemented these part of func
+    
+    /*
     if (dist<=3) {
         ack = mst->MstBusRequest(this->id, false, dsp_need_process, 1);
         if(ack){
@@ -49,5 +52,6 @@ void sw::main(){
     if (ack) {
         mst->MstWriteData(1);
     }
+     */
     
 }
