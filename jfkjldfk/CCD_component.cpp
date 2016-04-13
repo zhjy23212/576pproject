@@ -58,7 +58,6 @@ void CCD::ccdslv(){
             if (rdnwr==1) {
                 slvinout->SlvSendReadData(done);
                 done=0;
-                ccdready.notify();
             }
         }
     }
