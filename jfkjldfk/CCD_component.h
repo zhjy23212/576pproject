@@ -62,7 +62,16 @@ public:
             eachrow.clear();
         }
         
-        done=0;
+//        for (int i=0; i<image.size(); i++) {
+//            for (int j=0; j<image[i].size(); j++) {
+//                cout<<image[i][j]<<" ";
+//            }
+//            cout<<"    <<<<<<<    "<<endl;
+//        }
+//        
+//        cout<<image.size()<<endl;
+//        
+//        done=0;
         
         SC_THREAD(ccdmst);
         SC_THREAD(ccdslv);
