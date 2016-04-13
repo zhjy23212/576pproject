@@ -18,9 +18,7 @@ void Memory::listenThread(){
             slv->SlvAcknowledge();
             if (rdNwr) {
                 for (int i = 0; i<reqLen; i++) {
-                    //cout<<"NOW IN MEM "<<mem_data[addr-ADDR_begin+i]<<endl;
                     slv->SlvSendReadData(image[reqAddr-MEM_START_ADDRESS+i]);
-                    
                 }
             }else{
                 for (int i = 0; i<reqLen; i++) {

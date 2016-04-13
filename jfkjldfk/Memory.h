@@ -21,18 +21,19 @@ class Memory:public sc_module{
 public:
     sc_port<bus_slave_if>  slv;
     SC_HAS_PROCESS(Memory);
+    std::vector<unsigned int> image ;
+    unsigned distance;
+    unsigned angle;
     
     Memory(sc_module_name name):sc_module(name){
-        image.reserve(IMG_HEIGHT*IMG_WIDTH);
+        image.assign(IMG_HEIGHT*IMG_WIDTH,0);
         SC_THREAD(listenThread) ;
     }
     void listenThread();
     
     
 
-    std::vector<unsigned int> image ;
-    unsigned distance;
-    unsigned angle;
+    
     
     //bool hasImage = false;
 };

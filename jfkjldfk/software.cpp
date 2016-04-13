@@ -14,6 +14,7 @@ void sw::main(){
     if(ack){
         mst->MstWriteData(1);
     }
+    
     do{
         ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
         if (ack) {
