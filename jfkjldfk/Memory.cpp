@@ -25,7 +25,7 @@ void Memory::listenThread(){
             }else{
                 for (int i = 0; i<reqLen; i++) {
                     slv->SlvReceiveWriteData(image[reqAddr-MEM_START_ADDRESS+i]);
-                    
+//                    cout<<image[reqAddr-MEM_START_ADDRESS+i];
                 }
             }
         }
