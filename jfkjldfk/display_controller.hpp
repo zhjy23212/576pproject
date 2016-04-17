@@ -17,10 +17,12 @@ class display_controller:public sc_module, public simple_if{
 public:
     
     unsigned int zoom;
-    unsigned int move;
-    display_controller(sc_module_name name, unsigned int zoom, unsigned int move):sc_module(name){
+    unsigned int move_down;
+    unsigned int move_right;
+    display_controller(sc_module_name name, unsigned int zoom, unsigned int move_down, unsigned int move_ri):sc_module(name){
         this->zoom = zoom;
-        this->move = move;
+        this->move_down = move_down;
+        this->move_right = move_ri;
     }
     
     bool Write ( unsigned  int addr,  unsigned  int data )  ;

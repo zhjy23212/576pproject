@@ -13,6 +13,7 @@
 #include "bus_interface.h"
 #include "Bus_request.h"
 #include "simple_interface.h"
+#include <fstream>
 
 class display:public sc_module{
 public:
@@ -20,7 +21,7 @@ public:
     unsigned int  done = 0;
     sc_port<bus_slave_if> slv;
     sc_port<simple_if> get_inst;
-    unsigned int zoom = 0, move = 0;
+    unsigned int zoom = 0, move_down = 0, move_right = 0 ;
     unsigned int on_lcd_signal = 0;
     SC_HAS_PROCESS(display);
     sc_event display_event;

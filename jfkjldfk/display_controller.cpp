@@ -11,7 +11,9 @@ bool display_controller:: Read(unsigned int addr, unsigned int &data){
     if(addr == 0){
         data = zoom;
     }else if(addr == 1){
-        data = move;
+        data = move_down;
+    }else if (addr == 2){
+        data = move_right;
     }else{
         return false;
     }
@@ -22,7 +24,9 @@ bool display_controller:: Write(unsigned int addr, unsigned int dataint){
     if (addr == 0){
         zoom = dataint;
     }else if(addr == 1){
-        move = dataint;
+        move_down = dataint;
+    }else if (addr == 2){
+        move_right = dataint;
     }else{
         return false;
     }
