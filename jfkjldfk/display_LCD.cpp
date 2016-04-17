@@ -1,9 +1,14 @@
 //
 //  display_LCD.cpp
-//  jfkjldfk
+//
+//  This program simulate the functionality screen in an actual camara system
+//  The process for this is when get LCD-ON signal, it start retrieving the zoom and move parameter from controller
+//  With the processed image,this writes back a txt file to simulate the output of screen
+//  We can examine it by reading the data into MATLAB and output it.
+//
 //
 //  Created by Jiyang on 16/4/11.
-//  Copyright © 2016年 Jiyang. All rights reserved.
+//  Copyright © 2016 Jiyang. All rights reserved.
 //
 
 #include "display_LCD.hpp"
@@ -51,9 +56,14 @@ void display:: processThread(){
         for(int i = 0; i < IMG_HEIGHT; i++){
             for (int j = 0; j < IMG_WIDTH; j++) {
                 
-                fileout<<display_img[i][j]<<" ";
+                fileout<<display_img[i][j];
+                if (j!=IMG_WIDTH -1) {
+                    fileout<<" ";
+                }
             }
-            fileout<<endl;
+            if (i != IMG_HEIGHT-1) {
+                fileout<<endl;
+            }
         }
     }else{
         unsigned int start_row = 0, start_col = 0;
@@ -83,13 +93,24 @@ void display:: processThread(){
                         temp[i][j] = temp[i][j-1];
                     }
                 }else{
-                    temp[i][j] = temp[i][j-1];
+                    temp[i][j] = temp[i-1][j];
                 }
             }
         }
-        //temp is the array to write to file
-        
-        
+        //temp is the array to write to file when zoomed
+        for(int i = 0; i < temp.size(); i++){
+            for (int j = 0; j < temp[0].size(); j++) {
+                
+                fileout<<temp[i][j];
+                if(j != temp[0].size()-1){
+                    fileout<<" ";
+                }
+            }
+            if(i !=temp.size()-1){
+                fileout<<std::endl;
+            }
+        }
+    
     }
     
     fileout<<flush;
