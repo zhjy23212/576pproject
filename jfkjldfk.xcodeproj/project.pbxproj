@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B40855211CC6F6B80036839F /* libopencv_core.3.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B408551D1CC6F6B30036839F /* libopencv_core.3.1.0.dylib */; };
+		B40855221CC6F6B80036839F /* libopencv_highgui.3.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B408551E1CC6F6B50036839F /* libopencv_highgui.3.1.0.dylib */; };
+		B40855231CC6F6B80036839F /* libopencv_imgproc.3.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B408551F1CC6F6B60036839F /* libopencv_imgproc.3.1.0.dylib */; };
+		B40855241CC6F6B80036839F /* libopencv_ml.3.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B40855201CC6F6B70036839F /* libopencv_ml.3.1.0.dylib */; };
 		B41140531C8FD32E001078D0 /* share_bus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B41140511C8FD32E001078D0 /* share_bus.cpp */; };
 		B4314C541C5AB7870026CD80 /* libsystemc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4314C4E1C5AAF880026CD80 /* libsystemc.a */; };
 		B43FF4AA1CBC10D100F329C6 /* software.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4A81CBC10D100F329C6 /* software.cpp */; };
@@ -32,6 +36,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B408551B1CC6EC450036839F /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../../../../usr/local/lib; sourceTree = "<group>"; };
+		B408551D1CC6F6B30036839F /* libopencv_core.3.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.3.1.0.dylib; path = ../../../../usr/local/lib/libopencv_core.3.1.0.dylib; sourceTree = "<group>"; };
+		B408551E1CC6F6B50036839F /* libopencv_highgui.3.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.3.1.0.dylib; path = ../../../../usr/local/lib/libopencv_highgui.3.1.0.dylib; sourceTree = "<group>"; };
+		B408551F1CC6F6B60036839F /* libopencv_imgproc.3.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.3.1.0.dylib; path = ../../../../usr/local/lib/libopencv_imgproc.3.1.0.dylib; sourceTree = "<group>"; };
+		B40855201CC6F6B70036839F /* libopencv_ml.3.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_ml.3.1.0.dylib; path = ../../../../usr/local/lib/libopencv_ml.3.1.0.dylib; sourceTree = "<group>"; };
 		B411404D1C8FA446001078D0 /* Bus_request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bus_request.h; sourceTree = "<group>"; };
 		B41140511C8FD32E001078D0 /* share_bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = share_bus.cpp; sourceTree = "<group>"; };
 		B41140521C8FD32E001078D0 /* share_bus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = share_bus.h; sourceTree = "<group>"; };
@@ -64,6 +73,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B40855211CC6F6B80036839F /* libopencv_core.3.1.0.dylib in Frameworks */,
+				B40855221CC6F6B80036839F /* libopencv_highgui.3.1.0.dylib in Frameworks */,
+				B40855231CC6F6B80036839F /* libopencv_imgproc.3.1.0.dylib in Frameworks */,
+				B40855241CC6F6B80036839F /* libopencv_ml.3.1.0.dylib in Frameworks */,
 				B4314C541C5AB7870026CD80 /* libsystemc.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +87,11 @@
 		B4314C391C5AAEAF0026CD80 = {
 			isa = PBXGroup;
 			children = (
+				B408551D1CC6F6B30036839F /* libopencv_core.3.1.0.dylib */,
+				B408551E1CC6F6B50036839F /* libopencv_highgui.3.1.0.dylib */,
+				B408551F1CC6F6B60036839F /* libopencv_imgproc.3.1.0.dylib */,
+				B40855201CC6F6B70036839F /* libopencv_ml.3.1.0.dylib */,
+				B408551B1CC6EC450036839F /* lib */,
 				B4314C4E1C5AAF880026CD80 /* libsystemc.a */,
 				B4314C4C1C5AAF120026CD80 /* Library */,
 				B4314C441C5AAEAF0026CD80 /* jfkjldfk */,
@@ -272,10 +290,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
-				HEADER_SEARCH_PATHS = "/Library/systemc-2.3.1/src";
+				HEADER_SEARCH_PATHS = (
+					"/Library/systemc-2.3.1/src",
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"/Library/systemc-2.3.1/lib",
 					"$(LOCAL_LIBRARY_DIR)/systemc-2.3.1/lib",
+					/usr/local/lib,
 				);
 				OTHER_LDFLAGS = "-stdlib=libstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -286,10 +308,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
-				HEADER_SEARCH_PATHS = "/Library/systemc-2.3.1/src";
+				HEADER_SEARCH_PATHS = (
+					"/Library/systemc-2.3.1/src",
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"/Library/systemc-2.3.1/lib",
 					"$(LOCAL_LIBRARY_DIR)/systemc-2.3.1/lib",
+					/usr/local/lib,
 				);
 				OTHER_LDFLAGS = "-stdlib=libstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
