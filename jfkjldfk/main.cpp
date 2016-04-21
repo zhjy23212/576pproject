@@ -40,8 +40,9 @@ public:
         mem_inst=new Memory("mem1");
         sw1=new sw("sw1",idNum++);
         ccd1= new CCD("ccd1",idNum++,filename);
-        bus1=new share_bus("bus1",idNum++);
-        dsp1=new DSP("dsp1",idNum);
+        dsp1=new DSP("dsp1",idNum++);
+        bus1=new share_bus("bus1",idNum);
+        
         sw1->mst(*bus1);
         ccd1->inandout(*motion1);
         ccd1->mstinout(*bus1);

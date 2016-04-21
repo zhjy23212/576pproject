@@ -29,8 +29,10 @@ void DSP::dspmst(){
         if (ack3==true) {
             for (int j=0; j<IMG_WIDTH; j++) {
                 mstinout->MstReadData(img[i][j]);
+                cout<<img[i][j]<<" ";
             }
         }
+        cout<<endl;
     }
     dspdenoise();
     
