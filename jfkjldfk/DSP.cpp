@@ -29,10 +29,10 @@ void DSP::dspmst(){
         if (ack3==true) {
             for (int j=0; j<IMG_WIDTH; j++) {
                 mstinout->MstReadData(img[i][j]);
-                cout<<img[i][j]<<" ";
+//                cout<<img[i][j]<<" ";
             }
         }
-        cout<<endl;
+//        cout<<endl;
     }
     dspdenoise();
     
@@ -54,7 +54,18 @@ void DSP::dspslv(){
 }
 
 void DSP::dspdenoise(){
-    
+    Mat imgmat(256,256,CV_8UC1);
+    for (int i=0; i<256; i++) {
+        for (int j=0; j<256; j++) {
+            imgmat.at<Vec3b>(i,j)=img[i][j];
+        }
+    }
+    Mat src=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/camera.png");
+    imshow("origin", src);
+    Mat dst=imgmat.clone();
+    medianBlur(imgmat, dst, 3);
+//    imshow("hehe", dst);
+    waitKey();
 }
 
 
