@@ -29,7 +29,7 @@ void sw::main(){
     
     //not implemented these part of func
     
-    /*
+    
     if (dist<=3) {
         ack = mst->MstBusRequest(this->id, false, dsp_need_process, 1);
         if(ack){
@@ -42,17 +42,16 @@ void sw::main(){
         }
     }
     
-    do{
-        ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
-        if (ack) {
-            mst->MstReadData(done_sig);
-        }
-    }while (done_sig == 0);
-    
-    ack = mst->MstBusRequest(this->id, false, LCD_ON,  1);
-    if (ack) {
-        mst->MstWriteData(1);
-    }
-     */
+//    do{
+//        ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
+//        if (ack) {
+//            mst->MstReadData(done_sig);
+//        }
+//    }while (done_sig == 0);
+//    
+//    ack = mst->MstBusRequest(this->id, false, LCD_ON,  1);
+//    if (ack) {
+//        mst->MstWriteData(1);
+//    }
     
 }
