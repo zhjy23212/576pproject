@@ -14,6 +14,7 @@
 #include "simple_interface.h"
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <algorithm>
 using namespace std;
 using namespace cv;
 
@@ -44,4 +45,5 @@ public:
     void dspslv();
     void dspdenoise();
     void dspdeblur();
+    unsigned char  median(Mat imgmat,int x, int y );
 };

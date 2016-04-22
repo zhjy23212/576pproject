@@ -21,6 +21,7 @@
 		B43FF4C01CBC4CBE00F329C6 /* display_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4BE1CBC4CBE00F329C6 /* display_controller.cpp */; };
 		B43FF4C31CBD9CC900F329C6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B43FF4C21CBD9CC900F329C6 /* main.cpp */; };
 		B47542FB1CB5C56600E456E5 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B47542F91CB5C56600E456E5 /* Memory.cpp */; };
+		B4F8E73D1CC96C0E00F92B01 /* libopencv_imgcodecs.3.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4F8E73C1CC96C0D00F92B01 /* libopencv_imgcodecs.3.1.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +67,7 @@
 		B47542F91CB5C56600E456E5 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
 		B47542FA1CB5C56600E456E5 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		B47542FC1CB6011500E456E5 /* systemcenv.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = systemcenv.sh; sourceTree = "<group>"; };
+		B4F8E73C1CC96C0D00F92B01 /* libopencv_imgcodecs.3.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgcodecs.3.1.0.dylib; path = ../../../../usr/local/lib/libopencv_imgcodecs.3.1.0.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4F8E73D1CC96C0E00F92B01 /* libopencv_imgcodecs.3.1.0.dylib in Frameworks */,
 				B40855211CC6F6B80036839F /* libopencv_core.3.1.0.dylib in Frameworks */,
 				B40855221CC6F6B80036839F /* libopencv_highgui.3.1.0.dylib in Frameworks */,
 				B40855231CC6F6B80036839F /* libopencv_imgproc.3.1.0.dylib in Frameworks */,
@@ -87,6 +90,7 @@
 		B4314C391C5AAEAF0026CD80 = {
 			isa = PBXGroup;
 			children = (
+				B4F8E73C1CC96C0D00F92B01 /* libopencv_imgcodecs.3.1.0.dylib */,
 				B408551D1CC6F6B30036839F /* libopencv_core.3.1.0.dylib */,
 				B408551E1CC6F6B50036839F /* libopencv_highgui.3.1.0.dylib */,
 				B408551F1CC6F6B60036839F /* libopencv_imgproc.3.1.0.dylib */,
