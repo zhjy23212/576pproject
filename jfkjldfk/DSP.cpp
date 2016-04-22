@@ -67,9 +67,10 @@ void DSP::dspdenoise(){
     for(int i = 0;i<256;i++){
         for (int j = 0; j<256;  j++) {
             imgmat.at<unsigned char>(i,j) = median(padding, i, j);
+            //need add latency for the median operation, to do later
         }
     }
-    imshow("origin", padding);
+    imshow("origin", imgmat);  //use here to see the denoise result
     Mat dst=imgmat.clone();
     medianBlur(imgmat, dst, 3);
     waitKey();
@@ -88,6 +89,7 @@ unsigned char DSP:: median(Mat imgmat,int x, int y ){
         }
     }
     return temp[4];
+    
 }
 
 
