@@ -64,6 +64,7 @@ void DSP::dspdenoise(){
     padding = imgmat.clone();
     copyMakeBorder(imgmat, padding, 1, 1, 1, 1, BORDER_REPLICATE);
     //Mat src=imread("camera.png");
+    
     for(int i = 0;i<256;i++){
         for (int j = 0; j<256;  j++) {
             imgmat.at<unsigned char>(i,j) = median(padding, i, j);
@@ -71,15 +72,15 @@ void DSP::dspdenoise(){
         }
     }
     imshow("origin", imgmat);  //use here to see the denoise result
-    Mat dst=imgmat.clone();
-    medianBlur(imgmat, dst, 3);
+    //Mat dst=imgmat.clone();
+    //medianBlur(imgmat, dst, 3);
     waitKey();
 }
 
 unsigned char DSP:: median(Mat imgmat,int x, int y ){
     vector<unsigned char> temp;
     for(int i = x; i<x+3;i++){
-        for (int j = y; j<x+3; j++) {
+        for (int j = y; j<y+3; j++) {
             if(i == x && j == y){
                 temp.push_back(imgmat.at<unsigned char>(i,j));
             }else{
@@ -89,13 +90,13 @@ unsigned char DSP:: median(Mat imgmat,int x, int y ){
         }
     }
     return temp[4];
-    
 }
 
-
-void DSP::dspdeblur(){
+/*
+ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,int NSR){
     
-}
+     
+}*/
 
 
 
