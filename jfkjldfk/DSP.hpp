@@ -16,6 +16,7 @@
 #include <opencv2/opencv.hpp>
 #include <algorithm>
 #include <complex.h>
+#include <math.h>
 
 #define PI 3.14159
 using namespace std;
@@ -47,6 +48,7 @@ public:
     void dspmst();
     void dspslv();
     void dspdenoise();
+    Mat  special(unsigned int dist,unsigned int angle);
     Mat  dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,int NSR);
     unsigned char  median(Mat imgmat,int x, int y );
 };
