@@ -119,9 +119,13 @@ void DSP::dspdenoise(){
     waitKey();
      */
     Mat me = special(dist, angle);
-    for(int i = 0; i<me.rows; i++){
-        for (int j = 0 ; j<me.cols; j++) {
-            cout<<me.at<double>(i,j)<<" ";
+    Mat otf = psf2otf(me, me.rows, me.cols) ;
+    //dft(me, otf);
+    cout<<otf.rows << " "<< otf.cols<<endl;
+    
+    for(int i = 0; i<otf.rows; i++){
+        for (int j = 0 ; j<otf.cols; j++) {
+            cout<<otf.at<double>(i,j)<<" ";
         }
         cout<<endl;
     }
@@ -140,6 +144,57 @@ unsigned char DSP:: median(Mat imgmat,int x, int y ){
         }
     }
     return temp[4];
+}
+
+Mat DSP::psf2otf(cv::Mat psf, int height, int width){
+    Mat otf = Mat::zeros(height,width,psf.type());
+    
+    Size dftSize;
+    dftSize.width  = getOptimalDFTSize(width);
+    dftSize.height = getOptimalDFTSize(height);
+    
+    // allocate temporary buffers and initialize them with 0's
+    Mat temp(dftSize, psf.type(), Scalar::all(0));
+    
+    //copy psf to the top-left corners of temp
+    Mat roipsf(temp,Rect(0,0,psf.cols,psf.rows));
+    psf.copyTo(roipsf);
+    
+    // Circularly shift otf so that the "center" of the PSF is at the
+    // (0,0) element of the array.
+    Mat psf2 = temp.clone();
+    
+    int cx = psf.cols/2;
+    int cy = psf.rows/2;
+    
+    Mat p0(temp, Rect(0, 0, cx, cy));                   // Top-Left - Create a ROI per quadrant
+    Mat p1(temp, Rect(cx, 0, psf2.cols-cx, cy));            // Top-Right
+    Mat p2(temp, Rect(0, cy, cx, psf2.rows - cy));      // Bottom-Left
+    Mat p3(temp, Rect(cx,cy, psf2.cols-cx, psf2.rows - cy)); // Bottom-Right
+    
+    
+    Mat q0(psf2, Rect(0, 0,  psf2.cols-cx, psf2.rows - cy));// Top-Left - Create a ROI per quadrant
+    Mat q1(psf2, Rect(psf2.cols-cx, 0, cx, psf2.rows - cy));// Top-Right
+    Mat q2(psf2, Rect(0, psf2.rows - cy, psf2.cols-cx, cy));        // Bottom-Left
+    Mat q3(psf2, Rect(psf2.cols-cx, psf2.rows - cy,cx,cy)); // Bottom-Right
+    
+    // swap quadrants (Top-Left with Bottom-Right)
+    p0.copyTo(q3);
+    p3.copyTo(q0);
+    
+    // swap quadrant (Top-Right with Bottom-Left)
+    p1.copyTo(q2);
+    p2.copyTo(q1);
+    
+    // Computer the OTF
+    Mat planes[] = {Mat_<float>(psf2), Mat::zeros(psf2.size(), CV_32F)};
+    Mat complexI;
+    merge(planes, 2, complexI);
+    
+    dft(psf, complexI);
+   
+    
+    return otf(Range(0,height),Range(0,width));
 }
 
 // this return the motion blur kernel
