@@ -187,12 +187,12 @@ Mat DSP::psf2otf(cv::Mat psf, int height, int width){
     p2.copyTo(q1);
     
     // Computer the OTF
-    Mat planes[] = {Mat_<float>(psf2), Mat::zeros(psf2.size(), CV_32F)};
+    Mat planes[] = {Mat_<double>(psf2), Mat::zeros(psf2.size(), CV_64F)};
     Mat complexI;
     merge(planes, 2, complexI);
     
     dft(psf, complexI);
-   
+    otf = complexI;
     
     return otf(Range(0,height),Range(0,width));
 }
