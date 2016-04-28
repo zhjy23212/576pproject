@@ -11,7 +11,7 @@
 #include <systemc.h>
 
 //------------------------------------
-
+#define EPSILON 1E-6
 
 #define IMG_WIDTH 256
 #define IMG_HEIGHT 256

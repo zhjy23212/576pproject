@@ -119,6 +119,13 @@ void DSP::dspdenoise(){
     waitKey();
      */
     Mat me = special(dist, angle);
+    for(int i = 0; i<me.rows; i++){
+        for (int j = 0 ; j<me.cols; j++) {
+            cout<<me.at<double>(i,j)<<" ";
+        }
+        cout<<endl;
+    }
+    
     Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
     //dft(me, otf);
     cout<<otf.rows << " "<< otf.cols<<endl;
@@ -208,8 +215,8 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
         sign = -1;
     }
     int linedt = 1;
-    int sx = (int) fabs(half*cosphi +linedt * sign - 0.000001*dist);
-    int sy = (int) fabs(half*sinphi +linedt - 0.000001*dist);
+    int sx = (int) fabs(half*cosphi +linedt * sign - EPSILON*dist);
+    int sy = (int) fabs(half*sinphi +linedt - EPSILON*dist);
     Mat_<double> psf1(sy,sx,CV_64F);
     Mat_<double> psf2(sy*2,sx*2,CV_64F);
     int row = 2 * sy;
@@ -223,7 +230,7 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
                 double temp = half - fabs((j+pvalue[j]*sinphi)/cosphi);
                 pvalue[j] = sqrt(pvalue[j] * pvalue[j] + temp*temp);
             }
-            pvalue[j] = linedt + 0.000001 - fabs(pvalue[j]);
+            pvalue[j] = linedt + EPSILON - fabs(pvalue[j]);
             if(pvalue[j]<0){
                 pvalue[j] = 0;
             }
