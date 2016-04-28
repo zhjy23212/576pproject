@@ -119,7 +119,7 @@ void DSP::dspdenoise(){
     waitKey();
      */
     Mat me = special(dist, angle);
-    Mat otf = psf2otf(me, me.rows, me.cols) ;
+    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
     //dft(me, otf);
     cout<<otf.rows << " "<< otf.cols<<endl;
     
@@ -157,8 +157,8 @@ Mat DSP::psf2otf(cv::Mat psf, int height, int width){
     Mat temp(dftSize, psf.type(), Scalar::all(0));
     
     //copy psf to the top-left corners of temp
-    Mat roipsf(temp,Rect(0,0,psf.cols,psf.rows));
-    psf.copyTo(roipsf);
+    psf.copyTo(temp(cv::Rect_<double>(0,0,psf.cols,psf.rows)));
+    
     
     // Circularly shift otf so that the "center" of the PSF is at the
     // (0,0) element of the array.
@@ -191,10 +191,10 @@ Mat DSP::psf2otf(cv::Mat psf, int height, int width){
     Mat complexI;
     merge(planes, 2, complexI);
     
-    dft(psf, complexI);
+    dft(psf2, complexI);
     otf = complexI;
     
-    return otf(Range(0,height),Range(0,width));
+    return otf;
 }
 
 // this return the motion blur kernel
