@@ -297,26 +297,29 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
 }
 
 double DSP::nsrget(){
-    Mat temp=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/camera.png");
+    Mat temp1=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/camera.png");
     double ret;
     double noisevar=0.001;
-    int k=0;
+    double k=0;
+    Mat temp;
+    temp1.convertTo(temp, CV_64F);
     for (int i=0; i<256; i++) {
         for (int j=0; j<256; j++) {
-            k+=double(temp.at<unsigned char>(i, j))/256;
+            k+=(temp.at<double>(i, j)/256);
 //            cout<<(double(temp.at<unsigned char>(i, j))/256)<<" ";
         }
 //        cout<<endl;
     }
-    double mean=double(k)/(256*256);
+    double mean=k/(256*256);
     double imgvar=0;
     for (int i=0; i<256; i++) {
         for (int j=0;j<256; j++) {
-            imgvar+=pow((double(temp.at<unsigned char>(i,j))/256-mean), 2);
+            imgvar+=pow(abs(temp.at<double>(i,j)/256-mean), 2);
         }
     }
     imgvar/=(256*256);
-//    cout<<imgvar<<endl;
+//    imgvar=0.0598;
+    cout<<imgvar<<endl;
     ret=noisevar/imgvar;
     return ret;
 }
@@ -329,7 +332,9 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     Mat demon=otf.clone();
     for (int i=0; i<imgmat.rows; i++) {
         for (int j=0; j<imgmat.cols; j++) {
+//            cout<<demon.at<double>(i,j)<<" ";
             demon.at<double>(i,j)=pow(double(otf.at<double>(i,j)), 2)+NSR;
+//            cout<<demon.at<double>(i,j)<<" ";
             const double eps=EPSILON;
             demon.at<double>(i,j)=max(demon.at<double>(i,j),sqrt(eps));
 //            cout<<demon.at<double>(i,j)<<" ";
@@ -345,17 +350,48 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
         }
 //        cout<<endl;
     }
+    string filename="/Users/yanglizhuo/Desktop/Product/576project/576project/kernel.txt";
+    vector<vector<double> > gg;
+    ifstream fin;
+    fin.open(filename);
+    if (!fin.is_open()) {
+        cout<<"couldn't open the file "<<filename<<endl;
+        sc_stop();
+    }
     
-//    Mat nimg(256,256,CV_64F);
-//    for (int i=0; i<imgmat.rows; i++) {
-//        for (int j=0; j<imgmat.cols; j++) {
-//            nimg.at<double>(i,j)=double(imgmat.at<unsigned char>(i,j))/256;
-////            cout<<nimg.at<double>(i,j)<<" ";
-//        }
-////        cout<<endl;
-//    }
+    string line;
+    while (std::getline(fin, line)) {
+        std::istringstream iss(line);
+        vector<double> eachrow;
+        double a;
+        while(iss>>a){
+            eachrow.push_back(a);
+        }
+        gg.push_back(eachrow);
+        eachrow.clear();
+    }
     
-    Mat planes[] = {Mat_<double>(imgmat), Mat::zeros(imgmat.size(), CV_64F)};
+    Mat GG(256,256,CV_64F);
+    
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+            GG.at<double>(i,j)=gg[i][j];
+//            cout<<GG.at<double>(i,j)<<" ";
+        }
+//        cout<<endl;
+    }
+    Mat hehe=Mat_<double>(imgmat);
+    
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+            hehe.at<double>(i,j)/=255;
+            //            cout<<GG.at<double>(i,j)<<" ";
+        }
+        //        cout<<endl;
+    }
+    
+    Mat c1,c2;
+    Mat planes[] = {Mat_<double>(hehe), Mat::zeros(imgmat.size(), CV_64F)};
     Mat complexI;
     merge(planes, 2, complexI);
     
@@ -363,84 +399,153 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     
     dft(complexI, complexI);
     
-    
-    
-    for (int i=0; i<imgmat.rows; i++) {
-        for (int j=0; j<imgmat.cols; j++) {
-            //            cout<<complexI.at<double>(i,j)<<" ";
-            complexI.at<double>(i,j)=G.at<double>(i,j)*complexI.at<double>(i,j);
-            //            cout<<complexI.at<double>(i,j)<<" ";
-        }
-        //        cout<<endl;
-    }
-    
-    
+//    Size tempsize=Size_<int>(256, 256);
+//    hehe=fft2(hehe, tempsize);
+//    vector<Mat> chan;
+//    split(hehe, chan);
+//    c1=chan.at(0);
+//    c2=chan.at(1);
     
     split(complexI, planes);
-    magnitude(planes[0], planes[1], planes[0]);
     
-    Mat magI = planes[0];
+    multiply(planes[0], GG, planes[0]);
+    multiply(planes[1], GG, planes[1]);
     
-    magI += Scalar::all(1);                    // switch to logarithmic scale
-    log(magI, magI);
-    
-    // crop the spectrum, if it has an odd number of rows or columns
-    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
-    
-    // rearrange the quadrants of Fourier image  so that the origin is at the image center
-    int cx = magI.cols/2;
-    int cy = magI.rows/2;
-    
-    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
-    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
-    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
-    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
-    
-    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
-    q0.copyTo(tmp);
-    q3.copyTo(q0);
-    tmp.copyTo(q3);
-    
-    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
-    q2.copyTo(q1);
-    tmp.copyTo(q2);
-    
-    
-    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
-    // viewable image form (float between values 0 and 1).
-    
-//    imshow("Input Image"       , imgmat   );    // Show the result
-//    imshow("Spectrum Magnitude", magI);
-//    waitKey();
-    
-    //calculating the idft
-    cv::Mat inverseTransform;
-    cv::dft(complexI, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);
-    normalize(inverseTransform, inverseTransform, 0, 1, CV_MINMAX);
-    imshow("Reconstructed", inverseTransform);
-    waitKey();
-    
-    
-
-    
-    
-    
-    Mat invDFT,invDFTcvt;
-    idft(complexI, invDFT,cv::DFT_SCALE|cv::DFT_REAL_OUTPUT);
+    merge(planes, 2, complexI);
+//    idft(complexI, complexI);
+//    split(complexI, planes);
     
     for (int i=0; i<imgmat.rows; i++) {
         for (int j=0; j<imgmat.cols; j++) {
-//                        cout<<invDFT.at<double>(i,j)<<" ";
+//            cout<<complexI.at<double>(i,j)<<" ";
         }
-//                cout<<endl;
+//        cout<<endl;
     }
+
+//    cout<<hehe.channels()<<endl;
+ 
     
-    invDFT.convertTo(invDFTcvt, CV_8U);
     
-    return invDFTcvt;
+    
+    
+    
+//    for (int i=0; i<imgmat.rows; i++) {
+//        for (int j=0; j<imgmat.cols; j++) {
+//            //            cout<<complexI.at<double>(i,j)<<" ";
+//            complexI.at<double>(i,j)=G.at<double>(i,j)*complexI.at<double>(i,j);
+//            //            cout<<complexI.at<double>(i,j)<<" ";
+//        }
+//        //        cout<<endl;
+//    }
+    
+    
+//    magnitude(planes[0], planes[1], planes[0]);
+//    
+//    
+//    
+//    Mat magI = planes[0];
+//    
+//    magI += Scalar::all(1);                    // switch to logarithmic scale
+//    log(magI, magI);
+//    
+//    // crop the spectrum, if it has an odd number of rows or columns
+//    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
+//    
+//    // rearrange the quadrants of Fourier image  so that the origin is at the image center
+//    int cx = magI.cols/2;
+//    int cy = magI.rows/2;
+//    
+//    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
+//    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
+//    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
+//    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
+//    
+//    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
+//    q0.copyTo(tmp);
+//    q3.copyTo(q0);
+//    tmp.copyTo(q3);
+//    
+//    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
+//    q2.copyTo(q1);
+//    tmp.copyTo(q2);
+//    
+//    
+//    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
+//    // viewable image form (float between values 0 and 1).
+//    
+////    imshow("Input Image"       , imgmat   );    // Show the result
+////    imshow("Spectrum Magnitude", magI);
+////    waitKey();
+//    
+//    //calculating the idft
+//    
+    cv::Mat inverseTransform,test;
+    cv::dft(complexI, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);
+    normalize(inverseTransform, inverseTransform, 0, 1, CV_MINMAX);
+//    inverseTransform.convertTo(test, CV_8U);
+//    imshow("Reconstructed", inverseTransform);
+//    waitKey();
+    
+    
+
+    
+    
+    
+//    Mat invDFT,invDFTcvt;
+//    idft(complexI, invDFT,cv::DFT_SCALE|cv::DFT_REAL_OUTPUT);
+//    
+//    for (int i=0; i<imgmat.rows; i++) {
+//        for (int j=0; j<imgmat.cols; j++) {
+////                        cout<<invDFT.at<double>(i,j)<<" ";
+//        }
+////                cout<<endl;
+//    }
+//    
+//    invDFT.convertTo(invDFTcvt, CV_8U);
+    
+//    return invDFTcvt;
+    
+    return inverseTransform;
 }
 
-
+Mat DSP::fft2(Mat I,Size size)
+{
+    Mat If = Mat::zeros(I.size(),I.type());
+    
+    Size dftSize;
+    
+    // compute the size of DFT transform
+    dftSize.width  = getOptimalDFTSize(size.width);
+    dftSize.height = getOptimalDFTSize(size.height);
+    // No padded
+    //dftSize  = size;
+    
+    
+    // allocate temporary buffers and initialize them with 0's
+    Mat tempI(dftSize, I.type(), Scalar::all(0));
+    
+    //copy I to the top-left corners of temp
+    Mat roiI(tempI,Rect(0,0,I.cols,I.rows));
+    I.copyTo(roiI);
+    
+    if(I.channels()==1)
+    {
+        dft(tempI,If,DFT_COMPLEX_OUTPUT);
+    }
+    else
+    {
+        vector<Mat> channels;
+        split(tempI,channels);
+        for(int n= 0;n<I.channels();n++)
+        {
+            dft(channels[n],channels[n],DFT_COMPLEX_OUTPUT);
+        }
+        
+        cv::merge(channels,If);
+    }
+    
+    return If(Range(0,size.height),Range(0,size.width));
+}
 
 
 
