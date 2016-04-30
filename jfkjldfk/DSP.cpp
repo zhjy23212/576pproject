@@ -53,29 +53,48 @@ void DSP::dspslv(){
     }
 }
 
+double DSP::psnr(){
+    double ratio;
+    double MSE=0;
+   
+    Mat noise=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/cm.png");
+    for (int i=0; i<256; i++) {
+        for (int j=0; j<256; j++) {
+            int temp=img[i][j]-int(noise.at<unsigned char>(i,j));
+            MSE+=pow(temp, 2);
+        }
+    }
+    MSE=MSE/(256*256);
+    ratio=10*log10((256*256)/MSE);
+    
+    return ratio;
+}
+
 void DSP::dspdenoise(){
     Mat padding;
     Mat imgmat(256,256,CV_8U);
     for (int i=0; i<256; i++) {
         for (int j=0; j<256; j++) {
             imgmat.at<unsigned char>(i,j)=img[i][j];
+//            cout<<imgmat.at<unsigned char>(i,j)<<" ";
         }
+//        cout<<endl;
     }
-    padding = imgmat.clone();
-    copyMakeBorder(imgmat, padding, 1, 1, 1, 1, BORDER_REPLICATE);
-    //Mat src=imread("camera.png");
+//    padding = imgmat.clone();
+//    copyMakeBorder(imgmat, padding, 1, 1, 1, 1, BORDER_REPLICATE);
+////    Mat src=imread("camera.png");
+//    
+//    for(int i = 0;i<256;i++){
+//        for (int j = 0; j<256;  j++) {
+//            imgmat.at<unsigned char>(i,j) = median(padding, i, j);
+//            //need add latency for the median operation, to do later
+//        }
+//    }
     
-    for(int i = 0;i<256;i++){
-        for (int j = 0; j<256;  j++) {
-            imgmat.at<unsigned char>(i,j) = median(padding, i, j);
-            //need add latency for the median operation, to do later
-        }
-    }
-    
-    //imshow("origin", imgmat);  //use here to see the denoise result
+//    imshow("origin", imgmat);  //use here to see the denoise result
     //Mat dst=imgmat.clone();
     //medianBlur(imgmat, dst, 3);
-    //waitKey();
+//    waitKey();
     /*
     Mat img = imgmat.clone();
     Mat planes[] = {Mat_<float>(img), Mat::zeros(img.size(), CV_32F)};
@@ -119,23 +138,29 @@ void DSP::dspdenoise(){
     waitKey();
      */
     Mat me = special(dist, angle);
-    for(int i = 0; i<me.rows; i++){
-        for (int j = 0 ; j<me.cols; j++) {
-            cout<<me.at<double>(i,j)<<" ";
-        }
-        cout<<endl;
-    }
-    
     Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
     //dft(me, otf);
-    cout<<otf.rows << " "<< otf.cols<<endl;
+//    cout<<otf.rows << " "<< otf.cols<<endl;
     
     for(int i = 0; i<otf.rows; i++){
         for (int j = 0 ; j<otf.cols; j++) {
-            cout<<otf.at<double>(i,j)<<" ";
+//            cout<<otf.at<double>(i,j)<<" ";
         }
-        cout<<endl;
+//        cout<<endl;
     }
+    
+    double NSR=nsrget();
+    cout<<NSR<<endl;
+    
+    Mat ret=dspdeblur(imgmat, dist, angle, NSR);
+    
+    
+    
+   
+    imshow("hehe", ret);
+    waitKey();
+//    double nsr=psnr();
+//    cout<<nsr<<endl;
 }
 
 unsigned char DSP:: median(Mat imgmat,int x, int y ){
@@ -164,8 +189,7 @@ Mat DSP::psf2otf(cv::Mat psf, int height, int width){
     Mat temp(dftSize, psf.type(), Scalar::all(0));
     
     //copy psf to the top-left corners of temp
-    psf.copyTo(temp(cv::Rect_<double>(0,0,psf.cols,psf.rows)));
-    
+     psf.copyTo(temp(cv::Rect_<double>(0,0,psf.cols,psf.rows)));
     
     // Circularly shift otf so that the "center" of the PSF is at the
     // (0,0) element of the array.
@@ -215,8 +239,8 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
         sign = -1;
     }
     int linedt = 1;
-    int sx = (int) fabs(half*cosphi +linedt * sign - EPSILON*dist);
-    int sy = (int) fabs(half*sinphi +linedt - EPSILON*dist);
+    int sx = (int) fabs(half*cosphi +linedt * sign - 0.000001*dist);
+    int sy = (int) fabs(half*sinphi +linedt - 0.000001*dist);
     Mat_<double> psf1(sy,sx,CV_64F);
     Mat_<double> psf2(sy*2,sx*2,CV_64F);
     int row = 2 * sy;
@@ -230,7 +254,7 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
                 double temp = half - fabs((j+pvalue[j]*sinphi)/cosphi);
                 pvalue[j] = sqrt(pvalue[j] * pvalue[j] + temp*temp);
             }
-            pvalue[j] = linedt + EPSILON - fabs(pvalue[j]);
+            pvalue[j] = linedt + 0.000001 - fabs(pvalue[j]);
             if(pvalue[j]<0){
                 pvalue[j] = 0;
             }
@@ -272,11 +296,149 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
     return psf2;
 }
 
-/*
- Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,int NSR){
+double DSP::nsrget(){
+    Mat temp=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/camera.png");
+    double ret;
+    double noisevar=0.001;
+    int k=0;
+    for (int i=0; i<256; i++) {
+        for (int j=0; j<256; j++) {
+            k+=double(temp.at<unsigned char>(i, j))/256;
+//            cout<<(double(temp.at<unsigned char>(i, j))/256)<<" ";
+        }
+//        cout<<endl;
+    }
+    double mean=double(k)/(256*256);
+    double imgvar=0;
+    for (int i=0; i<256; i++) {
+        for (int j=0;j<256; j++) {
+            imgvar+=pow((double(temp.at<unsigned char>(i,j))/256-mean), 2);
+        }
+    }
+    imgvar/=(256*256);
+//    cout<<imgvar<<endl;
+    ret=noisevar/imgvar;
+    return ret;
+}
+
+
+Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
+    Mat me = special(dist, angle);
+    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
     
-     
-}*/
+    Mat demon=otf.clone();
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+            demon.at<double>(i,j)=pow(double(otf.at<double>(i,j)), 2)+NSR;
+            const double eps=EPSILON;
+            demon.at<double>(i,j)=max(demon.at<double>(i,j),sqrt(eps));
+//            cout<<demon.at<double>(i,j)<<" ";
+//            cout<<otf.at<double>(i,j)<<" ";
+        }
+//        cout<<endl;
+    }
+    Mat G=otf.clone();
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+            G.at<double>(i,j)=G.at<double>(i,j)/demon.at<double>(i,j);
+//            cout<<G.at<double>(i,j)<<" ";
+        }
+//        cout<<endl;
+    }
+    
+//    Mat nimg(256,256,CV_64F);
+//    for (int i=0; i<imgmat.rows; i++) {
+//        for (int j=0; j<imgmat.cols; j++) {
+//            nimg.at<double>(i,j)=double(imgmat.at<unsigned char>(i,j))/256;
+////            cout<<nimg.at<double>(i,j)<<" ";
+//        }
+////        cout<<endl;
+//    }
+    
+    Mat planes[] = {Mat_<double>(imgmat), Mat::zeros(imgmat.size(), CV_64F)};
+    Mat complexI;
+    merge(planes, 2, complexI);
+    
+//    cout<<"111"<<endl;
+    
+    dft(complexI, complexI);
+    
+    
+    
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+            //            cout<<complexI.at<double>(i,j)<<" ";
+            complexI.at<double>(i,j)=G.at<double>(i,j)*complexI.at<double>(i,j);
+            //            cout<<complexI.at<double>(i,j)<<" ";
+        }
+        //        cout<<endl;
+    }
+    
+    
+    
+    split(complexI, planes);
+    magnitude(planes[0], planes[1], planes[0]);
+    
+    Mat magI = planes[0];
+    
+    magI += Scalar::all(1);                    // switch to logarithmic scale
+    log(magI, magI);
+    
+    // crop the spectrum, if it has an odd number of rows or columns
+    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
+    
+    // rearrange the quadrants of Fourier image  so that the origin is at the image center
+    int cx = magI.cols/2;
+    int cy = magI.rows/2;
+    
+    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
+    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
+    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
+    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
+    
+    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
+    q0.copyTo(tmp);
+    q3.copyTo(q0);
+    tmp.copyTo(q3);
+    
+    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
+    q2.copyTo(q1);
+    tmp.copyTo(q2);
+    
+    
+    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
+    // viewable image form (float between values 0 and 1).
+    
+//    imshow("Input Image"       , imgmat   );    // Show the result
+//    imshow("Spectrum Magnitude", magI);
+//    waitKey();
+    
+    //calculating the idft
+    cv::Mat inverseTransform;
+    cv::dft(complexI, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);
+    normalize(inverseTransform, inverseTransform, 0, 1, CV_MINMAX);
+    imshow("Reconstructed", inverseTransform);
+    waitKey();
+    
+    
+
+    
+    
+    
+    Mat invDFT,invDFTcvt;
+    idft(complexI, invDFT,cv::DFT_SCALE|cv::DFT_REAL_OUTPUT);
+    
+    for (int i=0; i<imgmat.rows; i++) {
+        for (int j=0; j<imgmat.cols; j++) {
+//                        cout<<invDFT.at<double>(i,j)<<" ";
+        }
+//                cout<<endl;
+    }
+    
+    invDFT.convertTo(invDFTcvt, CV_8U);
+    
+    return invDFTcvt;
+}
 
 
 
