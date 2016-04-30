@@ -52,7 +52,7 @@ public:
     double nsrget();
     Mat fft2(Mat I,Size size);
     Mat psf2otf(Mat psf, int height, int width);
-    Mat  special(unsigned int dist,unsigned int angle);
+    Mat  special(double dist,double angle);
     Mat  dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR);
     unsigned char  median(Mat imgmat,int x, int y );
 };
