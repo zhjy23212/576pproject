@@ -34,13 +34,47 @@ void DSP::dspmst(){
         }
 //        cout<<endl;
     }
-    dspdenoise();
+    Mat denoise=dspdenoise();
+    
+    if (needdeblur==1) {
+        double NSR=nsrget();
+//        cout<<NSR<<endl;
+        
+        Mat ret=dspdeblur(denoise, dist, angle, NSR);
+        
+        for (int i=0; i<ret.rows; i++) {
+            for (int j=0; j<ret.cols; j++) {
+                img[i][j]=(unsigned)(ret.at<double>(i,j)*255);
+//                cout<<img[i][j]<<" ";
+            }
+//            cout<<endl;
+        }
+        
+//        imshow("hehe", ret);
+//        waitKey();
+    }
+    
+    for (int i=0; i<IMG_HEIGHT; i++) {
+        bool ack4=false;
+        ack4=mstinout->MstBusRequest(id, false, LCD_IMAGE_START_ADDR+i*IMG_WIDTH, IMG_WIDTH);
+        if (ack4==true) {
+            for (int j=0; j<IMG_WIDTH; j++) {
+                mstinout->MstWriteData(img[i][j]);
+            }
+        }
+    }
+    
+    ack1 = mstinout->MstBusRequest(id, false, LCD_DATA_TRANS_FIN, 1);
+    if(ack1){
+        mstinout->MstWriteData(1);
+    }
+    
+    done=1;
     
 }
 
 void DSP::dspslv(){
     unsigned addr,rdnwr,len;
-    unsigned needdeblur;
     while (1) {
         slvinout->SlvListen(addr, rdnwr, len);
         if (addr==dsp_need_process) {
@@ -48,6 +82,13 @@ void DSP::dspslv(){
             if (rdnwr==0) {
                 slvinout->SlvReceiveWriteData(needdeblur);
                 ready1.notify();
+            }
+        }
+        else if (addr==DSP_DONE) {
+            slvinout->SlvAcknowledge();
+            if (rdnwr==1) {
+                slvinout->SlvSendReadData(done);
+                done=0;
             }
         }
     }
@@ -70,7 +111,7 @@ double DSP::psnr(){
     return ratio;
 }
 
-void DSP::dspdenoise(){
+Mat DSP::dspdenoise(){
     Mat padding;
     Mat imgmat(256,256,CV_8U);
     for (int i=0; i<256; i++) {
@@ -80,85 +121,36 @@ void DSP::dspdenoise(){
         }
 //        cout<<endl;
     }
-//    padding = imgmat.clone();
-//    copyMakeBorder(imgmat, padding, 1, 1, 1, 1, BORDER_REPLICATE);
-////    Mat src=imread("camera.png");
-//    
-//    for(int i = 0;i<256;i++){
-//        for (int j = 0; j<256;  j++) {
-//            imgmat.at<unsigned char>(i,j) = median(padding, i, j);
-//            //need add latency for the median operation, to do later
-//        }
-//    }
+    padding = imgmat.clone();
+    copyMakeBorder(imgmat, padding, 1, 1, 1, 1, BORDER_REPLICATE);
+//    Mat src=imread("camera.png");
+    
+    for(int i = 0;i<256;i++){
+        for (int j = 0; j<256;  j++) {
+            imgmat.at<unsigned char>(i,j) = median(padding, i, j);
+            //need add latency for the median operation, to do later
+        }
+    }
     
 //    imshow("origin", imgmat);  //use here to see the denoise result
-    //Mat dst=imgmat.clone();
-    //medianBlur(imgmat, dst, 3);
+    Mat dst=imgmat.clone();
+    medianBlur(imgmat, dst, 3);
 //    waitKey();
-    /*
-    Mat img = imgmat.clone();
-    Mat planes[] = {Mat_<float>(img), Mat::zeros(img.size(), CV_32F)};
-    Mat complexI;    //Complex plane to contain the DFT coefficients {[0]-Real,[1]-Img}
-    merge(planes, 2, complexI);
-    dft(complexI, complexI);  // Applying DFT
     
-    
-    split(complexI, planes);                   // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
-    magnitude(planes[0], planes[1], planes[0]);// planes[0] = magnitude
-    Mat magI = planes[0];
-    
-    magI += Scalar::all(1);                    // switch to logarithmic scale
-    log(magI, magI);
-    
-    // crop the spectrum, if it has an odd number of rows or columns
-    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
-    
-    // rearrange the quadrants of Fourier image  so that the origin is at the image center
-    int cx = magI.cols/2;
-    int cy = magI.rows/2;
-    
-    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
-    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
-    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
-    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
-    
-    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
-    q0.copyTo(tmp);
-    q3.copyTo(q0);
-    tmp.copyTo(q3);
-    
-    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
-    q2.copyTo(q1);
-    tmp.copyTo(q2);
-    
-    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
-    // viewable image form (float between values 0 and 1).
-    
-    imshow("spectrum magnitude", magI);
-    waitKey();
-     */
-    Mat me = special(dist, angle);
-    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
+//    Mat me = special(dist, angle);
+//    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
     //dft(me, otf);
 //    cout<<otf.rows << " "<< otf.cols<<endl;
     
-    for(int i = 0; i<otf.rows; i++){
-        for (int j = 0 ; j<otf.cols; j++) {
-//            cout<<otf.at<double>(i,j)<<" ";
-        }
-//        cout<<endl;
-    }
-    
-    double NSR=nsrget();
-    cout<<NSR<<endl;
-    
-    Mat ret=dspdeblur(imgmat, dist, angle, NSR);
+//    for(int i = 0; i<otf.rows; i++){
+//        for (int j = 0 ; j<otf.cols; j++) {
+////            cout<<otf.at<double>(i,j)<<" ";
+//        }
+////        cout<<endl;
+//    }
     
     
-    
-   
-    imshow("hehe", ret);
-    waitKey();
+    return dst;
 //    double nsr=psnr();
 //    cout<<nsr<<endl;
 }
@@ -319,7 +311,7 @@ double DSP::nsrget(){
     }
     imgvar/=(256*256);
 //    imgvar=0.0598;
-    cout<<imgvar<<endl;
+//    cout<<imgvar<<endl;
     ret=noisevar/imgvar;
     return ret;
 }
@@ -425,10 +417,6 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
 //    cout<<hehe.channels()<<endl;
  
     
-    
-    
-    
-    
 //    for (int i=0; i<imgmat.rows; i++) {
 //        for (int j=0; j<imgmat.cols; j++) {
 //            //            cout<<complexI.at<double>(i,j)<<" ";
@@ -438,46 +426,7 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
 //        //        cout<<endl;
 //    }
     
-    
-//    magnitude(planes[0], planes[1], planes[0]);
-//    
-//    
-//    
-//    Mat magI = planes[0];
-//    
-//    magI += Scalar::all(1);                    // switch to logarithmic scale
-//    log(magI, magI);
-//    
-//    // crop the spectrum, if it has an odd number of rows or columns
-//    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
-//    
-//    // rearrange the quadrants of Fourier image  so that the origin is at the image center
-//    int cx = magI.cols/2;
-//    int cy = magI.rows/2;
-//    
-//    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
-//    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
-//    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
-//    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
-//    
-//    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
-//    q0.copyTo(tmp);
-//    q3.copyTo(q0);
-//    tmp.copyTo(q3);
-//    
-//    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
-//    q2.copyTo(q1);
-//    tmp.copyTo(q2);
-//    
-//    
-//    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
-//    // viewable image form (float between values 0 and 1).
-//    
-////    imshow("Input Image"       , imgmat   );    // Show the result
-////    imshow("Spectrum Magnitude", magI);
-////    waitKey();
-//    
-//    //calculating the idft
+
 //    
     cv::Mat inverseTransform,test;
     cv::dft(complexI, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);

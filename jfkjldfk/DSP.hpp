@@ -32,6 +32,7 @@ public:
     vector<vector<unsigned int> > img;
     unsigned id;
     unsigned done,dist,angle;
+    unsigned needdeblur;
     SC_HAS_PROCESS(DSP);
     
     DSP(sc_module_name name,unsigned int dsp_id):sc_module(name){
@@ -47,7 +48,7 @@ public:
     }
     void dspmst();
     void dspslv();
-    void dspdenoise();
+    Mat dspdenoise();
     double psnr();
     double nsrget();
     Mat fft2(Mat I,Size size);

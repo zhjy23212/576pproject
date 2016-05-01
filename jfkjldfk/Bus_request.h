@@ -31,6 +31,7 @@
 #define dsp_need_process 90000
 #define DSP_DIST 90001
 #define DSP_ANG 90002
+#define DSP_DONE 90003
 #define dsp_image_start 100001
 #define dsp_image_end  (dsp_image_start+IMG_WIDTH*IMG_HEIGHT-1)
 

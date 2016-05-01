@@ -19,6 +19,8 @@
 #include <iostream>
 #include <fstream>
 #include "systemc.h"
+#include "display_LCD.hpp"
+#include "display_controller.hpp"
 
 using namespace std;
 
@@ -30,6 +32,9 @@ public:
     Memory *mem_inst;
     motion_detector*motion1;
     DSP*dsp1;
+    display*display1;
+    display_controller*dispcon1;
+    
     unsigned int idNum = 0;
     
     top(sc_module_name name, char* filename, char* dist, char* ang):sc_module(name){
@@ -42,6 +47,8 @@ public:
         ccd1= new CCD("ccd1",idNum++,filename);
         dsp1=new DSP("dsp1",idNum++);
         bus1=new share_bus("bus1",idNum);
+        display1= new display("disp1");
+        dispcon1= new display_controller("dispcon1",1,3,0);
         
         sw1->mst(*bus1);
         ccd1->inandout(*motion1);
@@ -50,6 +57,8 @@ public:
         dsp1->mstinout(*bus1);
         dsp1->slvinout(*bus1);
         mem_inst->slv(*bus1);
+        display1->slv(*bus1);
+        display1->get_inst(*dispcon1);
     }
 };
 

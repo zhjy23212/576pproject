@@ -42,16 +42,18 @@ void sw::main(){
         }
     }
     
-//    do{
-//        ack = mst->MstBusRequest(this->id, true, CCD_done, 1);
-//        if (ack) {
-//            mst->MstReadData(done_sig);
-//        }
-//    }while (done_sig == 0);
-//    
-//    ack = mst->MstBusRequest(this->id, false, LCD_ON,  1);
-//    if (ack) {
-//        mst->MstWriteData(1);
-//    }
+    ack = mst->MstBusRequest(this->id, false, LCD_ON,  1);
+    if (ack) {
+        mst->MstWriteData(1);
+    }
+    
+    do{
+        ack = mst->MstBusRequest(this->id, true, DSP_DONE, 1);
+        if (ack) {
+            mst->MstReadData(done_sig);
+        }
+    }while (done_sig == 0);
+
+    
     
 }

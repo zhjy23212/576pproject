@@ -15,33 +15,39 @@
 
 void display:: listenThread(){
     unsigned int addr, rdNwr,len;
-    slv->SlvListen(addr, rdNwr, len);
-    if(addr == LCD_ON){
-        slv->SlvAcknowledge();
-        slv->SlvReceiveWriteData(on_lcd_signal);
-        std::cout<<"LCD ON"<<endl;
-    }
-    
-    if (LCD_DATA_TRANS_FIN == addr) {
-        slv->SlvAcknowledge();
-        slv->SlvReceiveWriteData(done);
-        std::cout<<"LCD data all got"<<endl;
-    }
-    
-    
-    
-    if((addr>=LCD_IMAGE_START_ADDR && addr<= LCD_IMAGE_END_ADDR) && on_lcd_signal == 1){
-        slv->SlvAcknowledge();
-        if(!rdNwr){
-            for (int i = 0; i < len; i++){
-                slv->SlvReceiveWriteData(display_img[(addr - LCD_IMAGE_START_ADDR)/IMG_WIDTH][i]);
+    while (1) {
+        slv->SlvListen(addr, rdNwr, len);
+        if(addr == LCD_ON){
+            slv->SlvAcknowledge();
+            slv->SlvReceiveWriteData(on_lcd_signal);
+            std::cout<<"LCD ON"<<endl;
+        }
+        
+        else if (LCD_DATA_TRANS_FIN == addr) {
+            slv->SlvAcknowledge();
+            slv->SlvReceiveWriteData(done);
+            std::cout<<"LCD data all got"<<endl;
+        }
+        
+        
+        
+        else if((addr>=LCD_IMAGE_START_ADDR && addr<= LCD_IMAGE_END_ADDR) && on_lcd_signal == 1){
+            slv->SlvAcknowledge();
+            if(!rdNwr){
+                for (int i = 0; i < len; i++){
+                    slv->SlvReceiveWriteData(display_img[(addr - LCD_IMAGE_START_ADDR)/IMG_WIDTH][i]);
+                }
             }
+        }
+        
+        
+        
+        if (done == 1) {
+            processThread();   //write the screen file
+            done =0;
         }
     }
     
-    if (done == 1) {
-        processThread();   //write the screen file
-    }
 }
 
 void display:: processThread(){
@@ -51,7 +57,7 @@ void display:: processThread(){
     // to obtain the controller instruction
     std::vector<std::vector<unsigned int>> temp(IMG_HEIGHT,std::vector<unsigned int>(IMG_WIDTH,0));
     std::vector<std::vector<unsigned int>> zoom_array(IMG_HEIGHT/2,std::vector<unsigned int>(IMG_WIDTH/2,0));
-    std::__1::ofstream fileout("screen.txt");
+    std::__1::ofstream fileout("/Users/yanglizhuo/Desktop/Product/576project/576project/screen.txt");
     if(zoom == 0){
         for(int i = 0; i < IMG_HEIGHT; i++){
             for (int j = 0; j < IMG_WIDTH; j++) {
