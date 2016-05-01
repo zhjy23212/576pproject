@@ -137,8 +137,33 @@ Mat DSP::dspdenoise(){
     medianBlur(imgmat, dst, 3);
 //    waitKey();
     
+<<<<<<< HEAD
 //    Mat me = special(dist, angle);
 //    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
+=======
+    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
+    q2.copyTo(q1);
+    tmp.copyTo(q2);
+    
+    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
+    // viewable image form (float between values 0 and 1).
+    
+    imshow("spectrum magnitude", magI);
+    waitKey();
+     */
+    Mat me = special(dist, angle);
+    cout<<"output of the size:"<< me.rows<<"*"<<me.cols<<endl;
+    
+    for(int i = 0; i<me.rows; i++){
+        for (int j = 0 ; j<me.cols; j++) {
+            cout<<me.at<double>(i,j)<<" ";
+        }
+            cout<<endl;
+    }
+    
+    
+    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
+>>>>>>> origin/master
     //dft(me, otf);
 //    cout<<otf.rows << " "<< otf.cols<<endl;
     
@@ -221,42 +246,62 @@ Mat DSP::psf2otf(cv::Mat psf, int height, int width){
 }
 
 // this return the motion blur kernel
-Mat DSP::special(unsigned int dist, unsigned int angle){
-    double half = (dist-1)/2.0;
-    double phi = PI*(angle%180)/180;
-    double cosphi = cos(phi);
-    double sinphi = sin(phi);
-    int sign = 1;
-    if (cosphi<0) {
-        sign = -1;
+Mat DSP::special(double len, double angle){
+    double half=len/2;
+    double alpha = (angle-floor(angle/ 180) *180) /180* PI;
+    double cosalpha = cos(alpha);
+    double sinalpha = sin(alpha);
+    int xsign;
+    if (cosalpha < 0)
+    {
+        xsign = -1;
     }
-    int linedt = 1;
-    int sx = (int) fabs(half*cosphi +linedt * sign - 0.000001*dist);
-    int sy = (int) fabs(half*sinphi +linedt - 0.000001*dist);
-    Mat_<double> psf1(sy,sx,CV_64F);
-    Mat_<double> psf2(sy*2,sx*2,CV_64F);
+    else
+    {
+        if (angle == 90)
+        {
+            xsign = 0;
+        }
+        else
+        {
+            xsign = 1;
+        }
+    }
+    int psfwdt = 1;
+    int sx = (int)fabs(half*cosalpha + psfwdt*xsign - len*EPSILON);
+    int sy = (int)fabs(half*sinalpha + psfwdt - len*EPSILON);
+    Mat_<double> psf1(sy, sx, CV_64F);
+    Mat_<double> psf2(sy * 2, sx * 2, CV_64F);
     int row = 2 * sy;
     int col = 2 * sx;
-    for (int i = 0; i<sy; i++) {
+    /*为减小运算量，先计算一半大小的PSF*/
+    for (int i = 0; i < sy; i++)
+    {
         double* pvalue = psf1.ptr<double>(i);
-        for (int j = 0 ; j<sx; j++) {
-            pvalue[j] = i *fabs(cosphi) -  j*sinphi;
-            double rad = sqrt(i*i +j*j);
-            if (rad >= half && fabs(pvalue[j])<=linedt) {
-                double temp = half - fabs((j+pvalue[j]*sinphi)/cosphi);
+        for (int j = 0; j < sx; j++)
+        {
+            pvalue[j] = i*fabs(cosalpha) - j*sinalpha;
+            
+            double rad = sqrt(i*i + j*j);
+            if (rad >= half && fabs(pvalue[j]) <= psfwdt)
+            {
+                double temp = half - fabs((j + pvalue[j] * sinalpha) / cosalpha);
                 pvalue[j] = sqrt(pvalue[j] * pvalue[j] + temp*temp);
             }
-            pvalue[j] = linedt + 0.000001 - fabs(pvalue[j]);
-            if(pvalue[j]<0){
+            pvalue[j] = psfwdt + EPSILON - fabs(pvalue[j]);
+            if (pvalue[j] < 0)
+            {
                 pvalue[j] = 0;
             }
         }
     }
-    
-    for (int i = 0; i< sy; i++) {
-        double* pvalue1 = psf1.ptr<double >(i);
-        double* pvalue2 = psf2.ptr<double >(i);
-        for (int j = 0; j<sx ; j++) {
+    /*将模糊核矩阵扩展至实际大小*/
+    for (int i = 0; i < sy; i++)
+    {
+        double* pvalue1 = psf1.ptr<double>(i);
+        double* pvalue2 = psf2.ptr<double>(i);
+        for (int j = 0; j < sx; j++)
+        {
             pvalue2[j] = pvalue1[j];
         }
     }
@@ -270,7 +315,7 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
             psf2[i][sx + j] = 0;
         }
     }
-    
+    /*保持图像总能量不变，归一化矩阵*/
     double sum = 0;
     for (int i = 0; i < row; i++)
     {
@@ -280,11 +325,12 @@ Mat DSP::special(unsigned int dist, unsigned int angle){
         }
     }
     psf2 = psf2 / sum;
-    if (cosphi>0)
+    if (cosalpha>0)
     {
         flip(psf2, psf2, 0);
     }
     
+    //cout << "psf2=" << psf2 << endl;
     return psf2;
 }
 
