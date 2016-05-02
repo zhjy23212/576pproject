@@ -18,6 +18,8 @@
 #include <complex.h>
 #include <math.h>
 
+
+#define DSP_PERIOD 10
 #define PI 3.14159
 using namespace std;
 using namespace cv;
