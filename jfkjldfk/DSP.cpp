@@ -136,36 +136,11 @@ Mat DSP::dspdenoise(){
     
 //    imshow("origin", imgmat);  //use here to see the denoise result
     Mat dst=imgmat.clone();
-    medianBlur(imgmat, dst, 3);
 //    waitKey();
-    
-<<<<<<< HEAD
+ 
 //    Mat me = special(dist, angle);
 //    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
-=======
-    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
-    q2.copyTo(q1);
-    tmp.copyTo(q2);
-    
-    normalize(magI, magI, 0, 1, CV_MINMAX); // Transform the matrix with float values into a
-    // viewable image form (float between values 0 and 1).
-    
-    imshow("spectrum magnitude", magI);
-    waitKey();
-     */
-    Mat me = special(dist, angle);
-    cout<<"output of the size:"<< me.rows<<"*"<<me.cols<<endl;
-    
-    for(int i = 0; i<me.rows; i++){
-        for (int j = 0 ; j<me.cols; j++) {
-            cout<<me.at<double>(i,j)<<" ";
-        }
-            cout<<endl;
-    }
-    
-    
-    Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
->>>>>>> origin/master
+
     //dft(me, otf);
 //    cout<<otf.rows << " "<< otf.cols<<endl;
     
