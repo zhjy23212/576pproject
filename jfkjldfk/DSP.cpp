@@ -40,6 +40,8 @@ void DSP::dspmst(){
         double NSR=nsrget();
 //        cout<<NSR<<endl;
         
+        wait(256*256*DSP_PERIOD,SC_NS);
+        
         Mat ret=dspdeblur(denoise, dist, angle, NSR);
         
         for (int i=0; i<ret.rows; i++) {
@@ -49,7 +51,7 @@ void DSP::dspmst(){
             }
 //            cout<<endl;
         }
-        
+        wait(256*256*DSP_PERIOD,SC_NS);
 //        imshow("hehe", ret);
 //        waitKey();
     }
@@ -365,7 +367,12 @@ double DSP::nsrget(){
 
 Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     Mat me = special(dist, angle);
+    
+    wait(dist*cos(angle*1.0/180*PI)*dist*sin(angle*1.0/180*PI)*DSP_PERIOD,SC_NS);
+    
     Mat otf = psf2otf(me, imgmat.rows, imgmat.cols) ;
+    
+    wait(256*256*4*DSP_PERIOD,SC_NS);
     
     Mat demon=otf.clone();
     for (int i=0; i<imgmat.rows; i++) {
@@ -380,6 +387,8 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
         }
 //        cout<<endl;
     }
+    wait(256*256*2*DSP_PERIOD,SC_NS);
+    
     Mat G=otf.clone();
     for (int i=0; i<imgmat.rows; i++) {
         for (int j=0; j<imgmat.cols; j++) {
@@ -388,6 +397,8 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
         }
 //        cout<<endl;
     }
+    wait(256*256*DSP_PERIOD,SC_NS);
+    
     string filename="/Users/yanglizhuo/Desktop/Product/576project/576project/kernel.txt";
     vector<vector<double> > gg;
     ifstream fin;
@@ -437,6 +448,8 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     
     dft(complexI, complexI);
     
+    wait(256*256*4*DSP_PERIOD,SC_NS);
+    
 //    Size tempsize=Size_<int>(256, 256);
 //    hehe=fft2(hehe, tempsize);
 //    vector<Mat> chan;
@@ -448,6 +461,8 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     
     multiply(planes[0], GG, planes[0]);
     multiply(planes[1], GG, planes[1]);
+    
+    wait(256*256*2*DSP_PERIOD,SC_NS);
     
     merge(planes, 2, complexI);
 //    idft(complexI, complexI);
@@ -476,6 +491,9 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
 //    
     cv::Mat inverseTransform,test;
     cv::dft(complexI, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);
+    
+    wait(256*256*4*DSP_PERIOD,SC_NS);
+    
     normalize(inverseTransform, inverseTransform, 0, 1, CV_MINMAX);
 //    inverseTransform.convertTo(test, CV_8U);
 //    imshow("Reconstructed", inverseTransform);

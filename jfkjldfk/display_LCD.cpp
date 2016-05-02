@@ -121,5 +121,7 @@ void display:: processThread(){
     
     fileout<<flush;
     fileout.close();
+    cout<<"Syetem ends at time@ "<<sc_time_stamp()<<endl;
+    sc_stop();
     
 }
