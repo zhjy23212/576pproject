@@ -29,18 +29,20 @@ void DSP::dspmst(){
         if (ack3==true) {
             for (int j=0; j<IMG_WIDTH; j++) {
                 mstinout->MstReadData(img[i][j]);
+                wait(4*DSP_PERIOD,SC_NS);
 //                cout<<img[i][j]<<" ";
             }
         }
 //        cout<<endl;
     }
+    
     Mat denoise=dspdenoise();
     
     if (needdeblur==1) {
         double NSR=nsrget();
 //        cout<<NSR<<endl;
         
-        wait(256*256*4*DSP_PERIOD,SC_NS);
+        wait(256*256*4*2*DSP_PERIOD,SC_NS);
         
         Mat ret=dspdeblur(denoise, dist, angle, NSR);
         
@@ -48,6 +50,7 @@ void DSP::dspmst(){
             for (int j=0; j<ret.cols; j++) {
                 img[i][j]=(unsigned)(ret.at<double>(i,j)*255);
 //                cout<<img[i][j]<<" ";
+                
             }
 //            cout<<endl;
         }
@@ -62,6 +65,7 @@ void DSP::dspmst(){
         if (ack4==true) {
             for (int j=0; j<IMG_WIDTH; j++) {
                 mstinout->MstWriteData(img[i][j]);
+                wait(DSP_PERIOD,SC_NS);
             }
         }
     }
@@ -100,7 +104,7 @@ double DSP::psnr(){
     double ratio;
     double MSE=0;
    
-    Mat noise=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/cm.png");
+    Mat noise=imread("cm.png");
     for (int i=0; i<256; i++) {
         for (int j=0; j<256; j++) {
             int temp=img[i][j]-int(noise.at<unsigned char>(i,j));
@@ -312,7 +316,7 @@ Mat DSP::special(double len, double angle){
 }
 
 double DSP::nsrget(){
-    Mat temp1=imread("/Users/yanglizhuo/Desktop/Product/576project/576project/camera.png");
+    Mat temp1=imread("camera.png");
     double ret;
     double noisevar=0.001;
     double k=0;
@@ -376,7 +380,7 @@ Mat DSP::dspdeblur(Mat imgmat, unsigned dist, unsigned int angle,double NSR){
     }
     wait(256*256*4*DSP_PERIOD,SC_NS);
     
-    string filename="/Users/yanglizhuo/Desktop/Product/576project/576project/kernel.txt";
+    string filename="kernel.txt";
     vector<vector<double> > gg;
     ifstream fin;
     fin.open(filename);

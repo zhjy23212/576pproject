@@ -18,8 +18,8 @@
 #include <complex.h>
 #include <math.h>
 
-//modify dsp_period 20, 10, 5, 2.5 
-#define DSP_PERIOD 10
+//modify dsp_period 20, 10, 5, 2.5
+#define DSP_PERIOD 2.5
 #define PI 3.14159
 using namespace std;
 using namespace cv;

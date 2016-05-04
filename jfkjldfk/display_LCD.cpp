@@ -57,7 +57,7 @@ void display:: processThread(){
     // to obtain the controller instruction
     std::vector<std::vector<unsigned int>> temp(IMG_HEIGHT,std::vector<unsigned int>(IMG_WIDTH,0));
     std::vector<std::vector<unsigned int>> zoom_array(IMG_HEIGHT/2,std::vector<unsigned int>(IMG_WIDTH/2,0));
-    std::__1::ofstream fileout("/Users/yanglizhuo/Desktop/Product/576project/576project/screen.txt");
+    std::__1::ofstream fileout("screen.txt");
     if(zoom == 0){
         for(int i = 0; i < IMG_HEIGHT; i++){
             for (int j = 0; j < IMG_WIDTH; j++) {
